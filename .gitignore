@@ -1,5 +1,3 @@
-test (copy)/
-*.txt
 *.class
 *.iml
 .idea/
@@ -9,3 +7,4 @@ my_job.*
 test/
 *.log
 .DS_Store
+*.jar
