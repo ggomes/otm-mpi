@@ -1,2 +1,4 @@
-_met*
-*.text
+*metis*
+*.txt
+*.xml
+*.json

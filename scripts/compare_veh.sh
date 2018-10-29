@@ -1,13 +1,10 @@
-#!/usr/bin/env bash
-cd ../src/main/java
-mpijavac -d $OTMMPIHOME/out_mpijavac -cp $OTMSIMJAR otm/*.java metagraph/*.java metis/*.java translator/*.java runner/*.java xmlsplitter/*.java ../../test/java/tests/CompareVeh.java
-cd $OTMMPIHOME/out_mpijavac
-mpirun -np 2 java -cp $OTMSIMJAR tests/CompareVeh true true ../config/100.xml 1 10 3600 ../test/compareVeh/ ../test/compareVeh/_
-# 0 boolean : [run metis] true -> run metis
-# 1 boolean : [write_otm_output] true -> request and write otm output files
-# 2 string : [config_file_name] config file name
-# 3 float : [sim_dt] sim dt in seconds
-# 4 float : [out_dt] out dt in seconds
-# 5 float : [duration] sim duration in seconds
-# 6 string : [output_folder] output folder for otm and runner output
-# 7 string : [metis_prefix] prefix for metis output files
+#!/bin/bash
+cd $OTMMPIHOME/src/test/java/tests
+javac -d $OTMMPIHOME/out_javac -cp $OTMSIMJAR CompareVeh.java
+cd $OTMMPIHOME/out_javac
+java -cp $OTMSIMJAR:. tests.CompareVeh 4 $OTMMPIHOME/test/50 $OTMMPIHOME/config/50_nodes.xml 2 1000
+# 0 int : [num_partitions]
+# 1 string : [prefix]
+# 2 string : [config_file]
+# 3 float : [sim_dt] seconds
+# 4 float : [duration] seconds
