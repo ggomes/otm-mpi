@@ -1,0 +1,11 @@
+test (copy)/
+*.txt
+*.class
+*.iml
+.idea/
+out/
+target/
+my_job.*
+test/
+*.log
+.DS_Store
