@@ -4,7 +4,6 @@
 out/
 target/
 my_job.*
-test/
 *.log
 .DS_Store
 *.jar
