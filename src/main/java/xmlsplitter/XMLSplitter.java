@@ -30,6 +30,14 @@ public class XMLSplitter {
         config_file = args[1];
         num_partitions = Integer.parseInt(args[2]);
 
+        if(num_partitions==1){
+            System.out.println("Detected num_partitions==1.");
+            System.out.println(String.format("\tprefix=%s",prefix));
+            System.out.println(String.format("\tconfig_file=%s",config_file));
+            System.out.println(String.format("\tnum_partitions=%d",num_partitions));
+            System.exit(0);
+        }
+
         // read the scenario
         ScenarioWrapper base_scenario = new ScenarioWrapper(JaxbLoader.load_scenario(config_file, true));
 
