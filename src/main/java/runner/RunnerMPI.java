@@ -57,7 +57,8 @@ public class RunnerMPI {
 
         // trivial case
         if(num_processes==1){
-            
+
+            System.out.println("--- 1 --- ");
             start = run_mpi ? MPI.wtime() : 0f;
             APIopen api = new APIopen(OTM.load(String.format("%s_cfg_%d.xml",prefix,my_rank),sim_dt,true,"ctm"));
             OTM.initialize(api.scenario(), new RunParameters(null, null, null, 0f, duration));
@@ -65,12 +66,17 @@ public class RunnerMPI {
                 api.api.request_links_veh(String.format("%s_%d",prefix_name,my_rank),output_folder, null, api.api.get_link_ids(), out_dt);
             load_subscenario_time = run_mpi ? MPI.wtime()-start : 0f;
 
+            System.out.println("--- 2 --- ");
             start = run_mpi ? MPI.wtime() : 0f;
             RunParameters runParam = new RunParameters(null, null, null, 0f,duration);
             OTMRunner.run(api.scenario(), runParam);
             mpi_run_time = run_mpi ? MPI.wtime()-start : 0f;
 
-            return;
+            System.out.println("--- 2 --- ");
+            MPI.Finalize();
+
+            System.out.println("--- 2 --- ");
+            System.exit(0);
         }
 
         // read my metagraph
