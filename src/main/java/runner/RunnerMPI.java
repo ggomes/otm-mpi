@@ -1,7 +1,9 @@
 package runner;
 
 import api.APIopen;
+import error.OTMException;
 import mpi.MPI;
+import mpi.MPIException;
 import otm.OTMRunner;
 import metagraph.MyMetaGraph;
 import translator.Translator;
@@ -21,7 +23,7 @@ public class RunnerMPI {
     public static boolean writeoutput;
 
     public static double metagraph_load_time;
-    public static double create_subscenario_time;
+    public static double load_subscenario_time;
     public static double create_translator_time;
     public static double mpi_run_time;
     public static double comm_time;
@@ -51,6 +53,25 @@ public class RunnerMPI {
             MPI.Init(args);
 
         int my_rank = run_mpi ? MPI.COMM_WORLD.getRank() : 0;
+        int num_processes = run_mpi ? MPI.COMM_WORLD.getSize() : 1;
+
+        // trivial case
+        if(num_processes==1){
+            
+            start = run_mpi ? MPI.wtime() : 0f;
+            APIopen api = new APIopen(OTM.load(String.format("%s_cfg_%d.xml",prefix,my_rank),sim_dt,true,"ctm"));
+            OTM.initialize(api.scenario(), new RunParameters(null, null, null, 0f, duration));
+            if(writeoutput)
+                api.api.request_links_veh(String.format("%s_%d",prefix_name,my_rank),output_folder, null, api.api.get_link_ids(), out_dt);
+            load_subscenario_time = run_mpi ? MPI.wtime()-start : 0f;
+
+            start = run_mpi ? MPI.wtime() : 0f;
+            RunParameters runParam = new RunParameters(null, null, null, 0f,duration);
+            OTMRunner.run(api.scenario(), runParam);
+            mpi_run_time = run_mpi ? MPI.wtime()-start : 0f;
+
+            return;
+        }
 
         // read my metagraph
         start = run_mpi ? MPI.wtime() : 0f;
@@ -63,7 +84,7 @@ public class RunnerMPI {
         OTM.initialize(api.scenario(), new RunParameters(null, null, null, 0f, duration));
         if(writeoutput)
             api.api.request_links_veh(String.format("%s_%d",prefix_name,my_rank),output_folder, null, api.api.get_link_ids(), out_dt);
-        create_subscenario_time = run_mpi ? MPI.wtime()-start : 0f;
+        load_subscenario_time = run_mpi ? MPI.wtime()-start : 0f;
 
         // create communicator and translator
         start = run_mpi ? MPI.wtime() : 0f;
@@ -95,7 +116,7 @@ public class RunnerMPI {
         try{
             fr = new FileWriter(file);
             fr.write(String.format("metagraph_load_time\t%f\n",metagraph_load_time));
-            fr.write(String.format("create_subscenario_time\t%f\n",create_subscenario_time));
+            fr.write(String.format("load_subscenario_time\t%f\n",load_subscenario_time));
             fr.write(String.format("create_translator_time\t%f\n",create_translator_time));
             fr.write(String.format("mpi_run_time\t%f\n",mpi_run_time));
             fr.write(String.format("comm_time\t%f\n",comm_time));
