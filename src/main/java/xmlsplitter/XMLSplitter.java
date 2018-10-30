@@ -10,6 +10,7 @@ import xml.JaxbLoader;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,10 +32,10 @@ public class XMLSplitter {
         num_partitions = Integer.parseInt(args[2]);
 
         if(num_partitions==1){
-            System.out.println("Detected num_partitions==1.");
-            System.out.println(String.format("\tprefix=%s",prefix));
-            System.out.println(String.format("\tconfig_file=%s",config_file));
-            System.out.println(String.format("\tnum_partitions=%d",num_partitions));
+            String config_name = (new File(config_file)).getName().replaceFirst("[.][^.]+$", "");
+            Runtime.getRuntime().exec(String.format("cp %s %s_1_cfg_0.xml",
+                    config_file,
+                    Paths.get(Paths.get(prefix).getParent().toString(),config_name)));
             System.exit(0);
         }
 

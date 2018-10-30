@@ -53,39 +53,40 @@ public class RunnerMPI {
         int my_rank = run_mpi ? MPI.COMM_WORLD.getRank() : 0;
 
         // read my metagraph
-        start = MPI.wtime();
+        start = run_mpi ? MPI.wtime() : 0f;
         MyMetaGraph my_metagraph = new MyMetaGraph(String.format("%s_mg_%d.json",prefix,my_rank));
-        metagraph_load_time = MPI.wtime()-start;
+        metagraph_load_time = run_mpi ? MPI.wtime()-start : 0f;
 
         // extract the subscenario for this rank
-        start = MPI.wtime();
+        start = run_mpi ? MPI.wtime() : 0f;
         APIopen api = new APIopen(OTM.load(String.format("%s_cfg_%d.xml",prefix,my_rank),sim_dt,true,"ctm"));
         OTM.initialize(api.scenario(), new RunParameters(null, null, null, 0f, duration));
         if(writeoutput)
             api.api.request_links_veh(String.format("%s_%d",prefix_name,my_rank),output_folder, null, api.api.get_link_ids(), out_dt);
-        create_subscenario_time = MPI.wtime()-start;
+        create_subscenario_time = run_mpi ? MPI.wtime()-start : 0f;
 
         // create communicator and translator
-        start = MPI.wtime();
+        start = run_mpi ? MPI.wtime() : 0f;
         int [] neighbors = my_metagraph.get_neighbors();
         mpi.GraphComm comm = run_mpi ?
                 MPI.COMM_WORLD.createDistGraphAdjacent(neighbors, neighbors, MPI.INFO_NULL, false) :
                 null;
 
         Translator translator = new Translator(my_metagraph,api.scenario());
-        create_translator_time = MPI.wtime()-start;
+        create_translator_time = run_mpi ? MPI.wtime()-start : 0f;
 
-        start = MPI.wtime();
+        start = run_mpi ? MPI.wtime() : 0f;
         RunParameters runParam = new RunParameters(null, null, null, 0f,duration);
         comm_time = OTMRunner.run(api.scenario(), runParam,translator,comm);
-        mpi_run_time = MPI.wtime()-start;
+        mpi_run_time = run_mpi ? MPI.wtime()-start : 0f;
 
         // write timers
         String filename = String.format("%s_%d_timers.txt",prefix,my_rank);
         write_output(filename,translator);
 
         // finalize mpi
-        MPI.Finalize();
+        if(run_mpi)
+            MPI.Finalize();
     }
 
     private static void write_output(String filename, Translator translator) {
