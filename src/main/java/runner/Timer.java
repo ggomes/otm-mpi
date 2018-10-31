@@ -33,6 +33,7 @@ public class Timer {
     }
 
     public double get_total_time() {
+        stop();
         return total_time;
     }
 

@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 
 public class RunnerMPI {
 
-    private static final boolean run_mpi = true;
+    private static final boolean run_mpi = false;
 
     public static String prefix;
     public static int repetition;
