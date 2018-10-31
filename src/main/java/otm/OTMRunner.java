@@ -5,19 +5,21 @@ import dispatch.EventMacroFlowUpdate;
 import dispatch.EventMacroStateUpdate;
 import dispatch.EventStopSimulation;
 import error.OTMException;
+import mpi.MPIException;
 import runner.RunParameters;
 import runner.Scenario;
+import runner.Timer;
 import translator.Translator;
 
 public class OTMRunner {
 
-    public static Double run(Scenario scenario, RunParameters runParams, Translator translator, mpi.GraphComm comm) throws OTMException {
-        Double comm_time = 0d;
+    public static double run(Scenario scenario, RunParameters runParams, Translator translator, mpi.GraphComm comm) throws OTMException, MPIException {
+        Timer comm_timer = new Timer(true);
         Dispatcher dispatcher = new Dispatcher(runParams.start_time);
         scenario.initialize(dispatcher,runParams);
-        run_mpi(scenario,runParams.duration,dispatcher,translator,comm,comm_time);
+        run_mpi(scenario,runParams.duration,dispatcher,translator,comm,comm_timer);
         scenario.is_initialized = false;
-        return comm_time;
+        return comm_timer.get_total_time();
     }
 
     public static void run(Scenario scenario, RunParameters runParams) throws OTMException {
@@ -27,7 +29,7 @@ public class OTMRunner {
         scenario.is_initialized = false;
     }
 
-    private static void run_mpi(Scenario scenario, float duration, Dispatcher dispatcher, Translator translator, mpi.GraphComm comm, Double comm_time) throws OTMException {
+    private static void run_mpi(Scenario scenario, float duration, Dispatcher dispatcher, Translator translator, mpi.GraphComm comm, Timer comm_timer) throws OTMException {
 
         dispatcher.set_continue_simulation(true);
 
@@ -39,7 +41,7 @@ public class OTMRunner {
 
         // register first models.ctm clock tick
         if(!scenario.network.macro_link_models.isEmpty()) {
-            dispatcher.register_event(new EventMacroFlowUpdateMPI(dispatcher, now + scenario.sim_dt, scenario.network,translator,comm,comm_time));
+            dispatcher.register_event(new EventMacroFlowUpdateMPI(dispatcher, now + scenario.sim_dt, scenario.network,translator,comm,comm_timer));
             dispatcher.register_event(new EventMacroStateUpdate(dispatcher, now + scenario.sim_dt, scenario.network));
         }
 

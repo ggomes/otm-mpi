@@ -5,6 +5,7 @@ import dispatch.AbstractEvent;
 import dispatch.Dispatcher;
 import error.OTMException;
 import mpi.MPI;
+import runner.Timer;
 import translator.Translator;
 
 import java.util.Arrays;
@@ -13,13 +14,13 @@ public class EventMacroFlowUpdateMPI extends AbstractEvent {
 
     private final Translator translator;
     private final mpi.GraphComm comm;
-    private Double comm_time;
+    private Timer comm_timer;
 
-    public EventMacroFlowUpdateMPI(Dispatcher dispatcher, float timestamp, Network network, Translator translator, mpi.GraphComm comm, Double comm_time){
+    public EventMacroFlowUpdateMPI(Dispatcher dispatcher, float timestamp, Network network, Translator translator, mpi.GraphComm comm, Timer comm_timer){
         super(dispatcher,1,timestamp,network);
         this.translator = translator;
         this.comm = comm;
-        this.comm_time = comm_time;
+        this.comm_timer = comm_timer;
     }
 
     @Override
@@ -39,7 +40,7 @@ public class EventMacroFlowUpdateMPI extends AbstractEvent {
         // register next clock tick
         float next_timestamp = timestamp+network.scenario.sim_dt;
         if(next_timestamp<=dispatcher.stop_time)
-            dispatcher.register_event(new EventMacroFlowUpdateMPI(dispatcher,next_timestamp,network,translator,comm,comm_time));
+            dispatcher.register_event(new EventMacroFlowUpdateMPI(dispatcher,next_timestamp,network,translator,comm,comm_timer));
     }
 
     public void update_macro_flow(Network network, float timestamp) throws Exception {
@@ -50,7 +51,7 @@ public class EventMacroFlowUpdateMPI extends AbstractEvent {
 
     private void mpi_communicate() throws Exception {
 
-        double start = MPI.wtime();
+        comm_timer.start();
 
         double [] rcvBuf = translator.create_rcv_buffer();
 
@@ -67,9 +68,12 @@ public class EventMacroFlowUpdateMPI extends AbstractEvent {
                                 translator.decoder.neighbor_length,
                                 translator.decoder.neighbor_disp,
                                 MPI.DOUBLE );
+
+
+
         translator.decode(rcvBuf,timestamp);
 
-        comm_time += MPI.wtime()-start;
+        comm_timer.stop();
     }
 
 }
