@@ -7,6 +7,7 @@ Open Transportation Models - MPI communication
 2. export OTMMPIHOME=< path to otm-mpi >
 3. chmod u+x scripts/*.sh
 4. [Download metis-5.1.0.tar.gz](http://glaros.dtc.umn.edu/gkhome/metis/metis). Follow the build instructions.
+5. Install [open-mpi 3.1](https://www.open-mpi.org/software/ompi/v3.1/)
 
 In IntelliJ:
 
