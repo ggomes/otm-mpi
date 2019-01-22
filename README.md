@@ -1,5 +1,5 @@
 # otm-mpi
-Open Transportation Models - MPI communication
+Open Traffic Models - MPI communicatio: This a parallized version of the [OTM](https://github.com/ggomes/otm-sim) simulation engine that can run on high performance computing (HPC) resources. It uses Message Passing Interface for communicating for multi-core communication. By exploiting parallel computation and HPC systems, otm-mpi can significantly speed up large-scale traffic simulations.
 
 ## Installation
 
