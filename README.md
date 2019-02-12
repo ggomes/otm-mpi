@@ -17,3 +17,7 @@ In IntelliJ:
    * Change the mpi package prefix
    
 ![](image1.png)
+
+## NOTES FOR LATER
+1. Add lib/json.1.1.1.jar
+
