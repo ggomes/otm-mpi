@@ -1,32 +1,56 @@
 # otm-mpi
 Open Traffic Models - MPI communication: This a parallized version of the [OTM](https://github.com/ggomes/otm-sim) simulation engine that uses Message Passing Interface (MPI) for multi-core communication on high performance computing (HPC) systems. It can exploit parallel computation and HPC power to significantly speed up large-scale traffic simulations.
 
-## Installation
+# Installation
 
-# Environment
+## Third party dependencies
 
-1. export OTMSIMJAR=< path to otm-sim [jar file](https://mymavenrepo.com/repo/XtcMAROnIu3PyiMCmbdY/otm/otm-sim/1.0-SNAPSHOT/) >
-2. export OTMMPIHOME=< path to otm-mpi >
-3. chmod u+x scripts/*.sh
++ Download [open-mpi 3.1](https://www.open-mpi.org/software/ompi/v3.1/).
++ Install Metis. Two methods:
+  + [metis-5.1.0.tar.gz](http://glaros.dtc.umn.edu/gkhome/metis/metis/download). Follow the instructions in Install.txt. To build METIS you will need to have cmake. 
+  + Ubuntu: sudo apt install metis
 
-# Third-party libaries
+## Install otm-sim
+```
+git clone git@github.com:ggomes/otm-sim.git
+cp otm-sim/settings.xml ~/.m2
+cd otm-sim
+git checkout remotes/origin/ctmrefac
+mvn clean install -DskipTests
+```
+Alternatively you can download the otm-sim jar [here](https://mymavenrepo.com/repo/XtcMAROnIu3PyiMCmbdY/otm/otm-sim/1.0-SNAPSHOT/) 
 
-4. [metis-5.1.0.tar.gz](http://glaros.dtc.umn.edu/gkhome/metis/metis/download). Follow the instructions in Install.txt. To build METIS you will need to have cmake. 
-5. [open-mpi 3.1](https://www.open-mpi.org/software/ompi/v3.1/).
+## Build in IntelliJ
 
-# Build with IntelliJ, no Maven
 
-5. Import project > Create project from existing sources
-6. Add otm-sim jar: Project Structure -> Modules -> Dependencies -> + JARs or directories...
-7. Add openmpi source: Project Structure -> Modules -> Sources
-   * Add Content Root: openmpi-3.1.0/ompi/mpi/java
-   * Change the package prefix to "mpi"
++ IntelliJ > Import project > otm-mpi > create project from existing sources ...
++ Add otm-sim and json jar files
+```
+Files > Project Structure > Project Settings > Modules
+	> Dependencies > + JARs or directories
+ 		> otm-sim/target/otm-sim-1.0-SNAPSHOT-jar-with-dependencies.jar
+   			check "Export" for otm-sim   
+		> otm-mpi/lib/json-simple-1.1.1.jar
+	> Sources > Add Content Root
+		> openmpi-3.1.0/ompi/mpi/java
+			Edit Root Properties > Package prefix : mpi
+```
 
-# Build with IntelliJ, with Maven
+## Test in IntelliJ
++ Run test.tests.XMLSplitterTest.main()
 
-6. Import project > Maven
-7. sdg
+   
+# Using scripts
 
-## NOTES FOR LATER
-1. Add lib/json.1.1.1.jar
+## Environment
+```
+export OTMSIMJAR=< path to otm-sim >
+export OTMMPIHOME=< path to otm-mpi >
+chmod u+x scripts/*.sh
+```
+## Build
+TBD
+
+## Run
+TBD
 
