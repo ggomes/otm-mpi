@@ -37,8 +37,7 @@ Files > Project Structure > Project Settings > Modules
 ```
 
 ## Test in IntelliJ
-+ Run test.tests.XMLSplitterTest.main()
-
+* Run test.tests.XMLSplitterTest.main()
    
 # Using scripts
 
@@ -46,11 +45,13 @@ Files > Project Structure > Project Settings > Modules
 ```
 export OTMSIMJAR=< path to otm-sim >
 export OTMMPIHOME=< path to otm-mpi >
-chmod u+x scripts/*.sh
+chmod u+x $OTMMPIHOME/scripts/*.sh
 ```
-## Build
-TBD
 
-## Run
-TBD
+## Scripts
+
+* ./run_splitter.sh : Test offline scenario splitting with a small network.
+* ./compile_mpi.sh : Compile the program using mpijavac.
+* ./compare_veh.sh : Run small example with 2 processes, and compare result to single-process run. 
+* ./run_mpi.sh : Run small example with 4 processes.
 
