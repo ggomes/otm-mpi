@@ -11,7 +11,7 @@ Open Traffic Models - MPI communication: This a parallized version of the [OTM](
 
 # Third-party libaries
 
-4. [metis-5.1.0.tar.gz](http://glaros.dtc.umn.edu/gkhome/metis/metis). Follow the build instructions. Not a trivial step.
+4. [metis-5.1.0.tar.gz](http://glaros.dtc.umn.edu/gkhome/metis/metis/download). Follow the instructions in Install.txt. To build METIS you will need to have cmake. 
 5. [open-mpi 3.1](https://www.open-mpi.org/software/ompi/v3.1/).
 
 # Build with IntelliJ, no Maven
