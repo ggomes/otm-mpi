@@ -115,6 +115,9 @@ public class XMLSplitter {
         // scenario ............................................
         jaxb.Scenario subscenario = new jaxb.Scenario();
 
+        // models ..............................................
+        subscenario.setModels(base_scenario.scenario.getModels());
+
         // network ..............................................
         jaxb.Network subnetwork = new jaxb.Network();
         subscenario.setNetwork(subnetwork);
