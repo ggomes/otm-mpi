@@ -63,7 +63,7 @@ public class RunnerMPI {
         if(num_processes==1){
 
             timer = new Timer(run_mpi);
-            APIopen api = new APIopen(OTM.load(String.format("%s_cfg_%d.xml",prefix,my_rank),sim_dt,true,"ctm"));
+            APIopen api = new APIopen(OTM.load(String.format("%s_cfg_%d.xml",prefix,my_rank)));
             OTM.initialize(api.scenario(), new RunParameters(null, null, null, 0f, duration));
             if(writeoutput)
                 api.api.request_links_veh(output_prefix,output_folder, null, api.api.get_link_ids(), out_dt);
@@ -89,7 +89,7 @@ public class RunnerMPI {
 
         // extract the subscenario for this rank
         timer = new Timer(run_mpi);
-        APIopen api = new APIopen(OTM.load(String.format("%s_cfg_%d.xml",prefix,my_rank),sim_dt,true,"ctm"));
+        APIopen api = new APIopen(OTM.load(String.format("%s_cfg_%d.xml",prefix,my_rank)));
         OTM.initialize(api.scenario(), new RunParameters(null, null, null, 0f, duration));
         if(writeoutput)
             api.api.request_links_veh(output_prefix,output_folder, null, api.api.get_link_ids(), out_dt);

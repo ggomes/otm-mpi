@@ -5,8 +5,6 @@ import runner.OTM;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class CompareVeh {
@@ -43,7 +41,7 @@ public class CompareVeh {
         String serial_prefix = String.format("%s_serial",prefix_name);
 
         // run serial
-        API api = OTM.load(config_file, sim_dt,true,"ctm");
+        API api = OTM.load(config_file);
         api.request_links_veh(serial_prefix,output_folder,null,api.get_link_ids(),out_dt);
         api.run(0f,duration);
 

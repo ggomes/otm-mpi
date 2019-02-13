@@ -1,10 +1,12 @@
 package otm;
 
 import dispatch.Dispatcher;
-import dispatch.EventMacroFlowUpdate;
-import dispatch.EventMacroStateUpdate;
+import dispatch.EventFluidFluxUpdate;
+import dispatch.EventFluidStateUpdate;
 import dispatch.EventStopSimulation;
 import error.OTMException;
+import models.AbstractFluidModel;
+import models.AbstractModel;
 import mpi.MPIException;
 import runner.RunParameters;
 import runner.Scenario;
@@ -31,18 +33,30 @@ public class OTMRunner {
 
     private static void run_mpi(Scenario scenario, float duration, Dispatcher dispatcher, Translator translator, mpi.GraphComm comm, Timer comm_timer) throws OTMException {
 
+        if(scenario.network.models.isEmpty())
+            throw new OTMException("No models!");
+
+        if(scenario.network.models.size()!=1)
+            throw new OTMException("This currently works only for a single model.");
+
+        AbstractModel abs_model = scenario.network.models.values().iterator().next();
+
+        if(!(abs_model instanceof AbstractFluidModel))
+            throw new OTMException("Not a fluid model.");
+
         dispatcher.set_continue_simulation(true);
 
         float now = dispatcher.current_time;
+        AbstractFluidModel model = (AbstractFluidModel) abs_model;
 
         // register stop the simulation
         dispatcher.set_stop_time(now+duration);
         dispatcher.register_event(new EventStopSimulation(scenario,dispatcher,now+duration));
 
         // register first models.ctm clock tick
-        if(!scenario.network.macro_link_models.isEmpty()) {
-            dispatcher.register_event(new EventMacroFlowUpdateMPI(dispatcher, now + scenario.sim_dt, scenario.network,translator,comm,comm_timer));
-            dispatcher.register_event(new EventMacroStateUpdate(dispatcher, now + scenario.sim_dt, scenario.network));
+        if(!scenario.network.models.isEmpty()) {
+            dispatcher.register_event(new EventMacroFlowUpdateMPI(dispatcher,now + model.dt,model,translator,comm,comm_timer));
+            dispatcher.register_event(new EventFluidStateUpdate(dispatcher, now + model.dt, model));
         }
 
         // process all events
@@ -50,21 +64,32 @@ public class OTMRunner {
 
     }
 
-
     private static void run_non_mpi(Scenario scenario, float duration, Dispatcher dispatcher) throws OTMException {
+
+        if(scenario.network.models.isEmpty())
+            throw new OTMException("No models!");
+
+        if(scenario.network.models.size()!=1)
+            throw new OTMException("This currently works only for a single model.");
+
+        AbstractModel abs_model = scenario.network.models.values().iterator().next();
+
+        if(!(abs_model instanceof AbstractFluidModel))
+            throw new OTMException("Not a fluid model.");
 
         dispatcher.set_continue_simulation(true);
 
         float now = dispatcher.current_time;
+        AbstractFluidModel model = (AbstractFluidModel) abs_model;
 
         // register stop the simulation
         dispatcher.set_stop_time(now+duration);
         dispatcher.register_event(new EventStopSimulation(scenario,dispatcher,now+duration));
 
         // register first models.ctm clock tick
-        if(!scenario.network.macro_link_models.isEmpty()) {
-            dispatcher.register_event(new EventMacroFlowUpdate(dispatcher, now + scenario.sim_dt, scenario.network));
-            dispatcher.register_event(new EventMacroStateUpdate(dispatcher, now + scenario.sim_dt, scenario.network));
+        if(!scenario.network.models.isEmpty()) {
+            dispatcher.register_event(new EventFluidFluxUpdate(dispatcher, now + model.dt, model));
+            dispatcher.register_event(new EventFluidStateUpdate(dispatcher, now + model.dt, model));
         }
 
         // process all events

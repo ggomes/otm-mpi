@@ -1,14 +1,15 @@
 package translator;
 
-import common.AbstractLaneGroup;
 import common.Link;
+import common.Node;
 import common.RoadConnection;
 import keys.KeyCommPathOrLink;
 import metagraph.MyMetaGraph;
 import metagraph.Neighbor;
+import models.AbstractLaneGroup;
 import models.ctm.Cell;
 import models.ctm.LaneGroup;
-import models.ctm.NodeModel;
+import models.NodeModel;
 import runner.Scenario;
 
 import java.util.*;
@@ -42,13 +43,13 @@ public class Translator {
                 Link link = scenario.network.links.get(link_id);
                 for (RoadConnection rc : get_ordered_road_connections_entering(link)) {
                     rc2Link.put(rc.getId(),link);
-                    NodeModel nodemodel = rc.get_start_link().end_node.node_model;
+                    NodeModel nodemodel = rc.get_start_link().end_node.get_node_model();
                     if(nodemodel!=null)
                         rc2nodemodel.put(rc.getId(), nodemodel);
                 }
                 for(AbstractLaneGroup lg : link.lanegroups_flwdn.values()) {
                     lgid2lg.put(lg.id,(models.ctm.LaneGroup) lg);
-                    NodeModel nodemodel = lg.link.end_node.node_model;
+                    NodeModel nodemodel = lg.link.end_node.get_node_model();
                     if(nodemodel!=null)
                         lg2nodemodel.put(lg.id, nodemodel);
                 }
@@ -212,11 +213,24 @@ public class Translator {
     }
 
     private static Set<KeyCommPathOrLink> get_states_for_roadconnection(RoadConnection rc){
-        Set<KeyCommPathOrLink> states = new HashSet<>();
-        for(AbstractLaneGroup lg : rc.in_lanegroups){
-            models.ctm.LaneGroup ctm_lg = (models.ctm.LaneGroup) lg;
-            states.addAll(ctm_lg.roadconnection2states.get(rc.getId()));
-        }
-        return states;
+
+        // get node
+        Node node = rc.start_link.end_node;
+        NodeModel node_model = node.get_node_model();
+
+        if(node_model==null)
+            System.err.println("I NEED A NODE MODEL HERE.");
+
+        if(!node_model.rcs.containsKey(rc.getId()))
+            System.err.println("THIS IS WEIRD: -398g25");
+
+        return node_model.rcs.get(rc.getId()).get_states();
+
+//        Set<KeyCommPathOrLink> states = new HashSet<>();
+//        for(AbstractLaneGroup lg : rc.in_lanegroups){
+//            models.ctm.LaneGroup ctm_lg = (models.ctm.LaneGroup) lg;
+//            states.addAll(ctm_lg.roadconnection2states.get(rc.getId()));
+//        }
+//        return states;
     }
 }

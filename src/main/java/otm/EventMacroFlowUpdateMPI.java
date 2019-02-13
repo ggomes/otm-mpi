@@ -3,12 +3,12 @@ package otm;
 import common.Network;
 import dispatch.AbstractEvent;
 import dispatch.Dispatcher;
+import dispatch.EventFluidFluxUpdate;
 import error.OTMException;
+import models.AbstractFluidModel;
 import mpi.MPI;
 import runner.Timer;
 import translator.Translator;
-
-import java.util.Arrays;
 
 public class EventMacroFlowUpdateMPI extends AbstractEvent {
 
@@ -16,8 +16,8 @@ public class EventMacroFlowUpdateMPI extends AbstractEvent {
     private final mpi.GraphComm comm;
     private Timer comm_timer;
 
-    public EventMacroFlowUpdateMPI(Dispatcher dispatcher, float timestamp, Network network, Translator translator, mpi.GraphComm comm, Timer comm_timer){
-        super(dispatcher,1,timestamp,network);
+    public EventMacroFlowUpdateMPI(Dispatcher dispatcher, float timestamp,AbstractFluidModel model, Translator translator, mpi.GraphComm comm, Timer comm_timer){
+        super(dispatcher,1,timestamp,model);
         this.translator = translator;
         this.comm = comm;
         this.comm_timer = comm_timer;
@@ -28,25 +28,25 @@ public class EventMacroFlowUpdateMPI extends AbstractEvent {
 
         super.action(verbose);
 
-        Network network = (Network)recipient;
+        AbstractFluidModel model = (AbstractFluidModel)recipient;
 
-        // update the ctm state
         try {
-            update_macro_flow(network,timestamp);
+            update_fluid_flux(model,timestamp);
         } catch (Exception e) {
             throw new OTMException(e.getMessage());
         }
 
         // register next clock tick
-        float next_timestamp = timestamp+network.scenario.sim_dt;
+        float next_timestamp = timestamp + model.dt;
         if(next_timestamp<=dispatcher.stop_time)
-            dispatcher.register_event(new EventMacroFlowUpdateMPI(dispatcher,next_timestamp,network,translator,comm,comm_timer));
+            dispatcher.register_event(new EventMacroFlowUpdateMPI(dispatcher,next_timestamp,model,translator,comm,comm_timer));
+
     }
 
-    public void update_macro_flow(Network network, float timestamp) throws Exception {
-        network.update_macro_flow_part_I(timestamp);
+    public void update_fluid_flux(AbstractFluidModel model,float timestamp) throws Exception {
+        model.update_fluid_flux_part_I(timestamp);
         mpi_communicate();
-        network.update_macro_flow_part_II(timestamp);
+        model.update_fluid_flux_part_II(timestamp);
     }
 
     private void mpi_communicate() throws Exception {
@@ -68,8 +68,6 @@ public class EventMacroFlowUpdateMPI extends AbstractEvent {
                                 translator.decoder.neighbor_length,
                                 translator.decoder.neighbor_disp,
                                 MPI.DOUBLE );
-
-
 
         translator.decode(rcvBuf,timestamp);
 

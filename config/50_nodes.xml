@@ -1,5 +1,10 @@
 <?xml version="1.0" ?>
 <scenario>
+	<models>
+		<model type="ctm" name="ctm2sec" is_default="true">
+			<model_params sim_dt="2" max_cell_length="100"/>
+		</model>
+	</models>
 	<commodities>
 		<commodity id="1" name="global" pathfull="false"/>
 	</commodities>

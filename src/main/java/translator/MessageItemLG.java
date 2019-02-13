@@ -1,7 +1,7 @@
 package translator;
 
-import common.AbstractLaneGroup;
 import keys.KeyCommPathOrLink;
+import models.AbstractLaneGroup;
 
 public class MessageItemLG extends AbstractMessageItem {
 
