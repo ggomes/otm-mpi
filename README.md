@@ -39,12 +39,10 @@ Files > Project Structure > Project Settings > Modules
 ## Test in IntelliJ
 * Run test.tests.XMLSplitterTest.main()
    
-# Using scripts
-
 ## Environment
 ```
-export OTMSIMJAR=< path to otm-sim >
-export OTMMPIHOME=< path to otm-mpi >
+export OTMSIMJAR=<path to otm-sim jar>
+export OTMMPIHOME=<path to otm-mpi folder>
 chmod u+x $OTMMPIHOME/scripts/*.sh
 ```
 
