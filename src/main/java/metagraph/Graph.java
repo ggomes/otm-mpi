@@ -24,6 +24,10 @@ public class Graph {
             links.add((Long) o);
     }
 
+    public boolean isempty(){
+        return nodes.isEmpty();
+    }
+
     public void validate() throws OTMException {
         // no repeated links
 

@@ -87,6 +87,9 @@ public class MetaGraph {
         // extract all graphs
         List<Graph> graphs = extract_graphs(scenario,metis);
 
+        if( graphs.stream().anyMatch(x->x.isempty()))
+            throw new Exception("Metis produced empty subgraphs.");
+
         // assign (boundary) links to graphs
         for(jaxb.Link link : scenario.get_links()){
 
