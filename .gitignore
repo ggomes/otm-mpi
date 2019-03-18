@@ -1,3 +1,7 @@
+test/Chicago
+test/50_2
+test/50_4
+config/Chicago.xml
 *.class
 *.iml
 .idea/
@@ -7,3 +11,4 @@ my_job.*
 *.log
 .DS_Store
 *.jar
+*~

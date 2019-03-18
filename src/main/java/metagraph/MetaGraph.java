@@ -50,6 +50,10 @@ public class MetaGraph {
             if(myrank==pair.low || myrank==pair.high)
                 my_metagraph.add_neighbor(pair);
         }
+
+        if (my_metagraph.mygraph == null){
+            Integer x = 0;
+        }
         return my_metagraph;
     }
 

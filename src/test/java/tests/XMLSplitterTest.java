@@ -8,9 +8,9 @@ public class XMLSplitterTest {
     public static void main(String[] notused) throws Exception {
 
         float duration = 1000f;
-        int num_partitions = 4;
+        int num_partitions = 2;
         String config_file = "config/50_nodes.xml";
-        String prefix = "test/50";
+        String prefix = "test/50_2/50";
 
         // split the config file
         String [] args = {prefix,config_file,String.format("%d",num_partitions)};
