@@ -51,9 +51,6 @@ public class MetaGraph {
                 my_metagraph.add_neighbor(pair);
         }
 
-        if (my_metagraph.mygraph == null){
-            Integer x = 0;
-        }
         return my_metagraph;
     }
 
