@@ -138,7 +138,7 @@ public class Translator {
                     Long lg_id = xitem.lg.id;
                     NodeModel node_model = lg2nodemodel.get(lg_id);
                     models.ctm.UpLaneGroup ulg = node_model.ulgs.get(lg_id);
-                    value = ulg.f_is.get(xitem.key);
+                    value = ulg.f_gs.get(xitem.key);
                 }
             }
 
@@ -177,7 +177,7 @@ public class Translator {
                     Long lg_id = xitem.lg.id;
                     NodeModel node_model = lg2nodemodel.get(lg_id);
                     models.ctm.UpLaneGroup ulg = node_model.ulgs.get(lg_id);
-                    ulg.f_is.put(xitem.key,value);
+                    ulg.f_gs.put(xitem.key,value);
                 }
             }
 
