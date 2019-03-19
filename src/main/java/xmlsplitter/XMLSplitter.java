@@ -56,7 +56,7 @@ public class XMLSplitter {
 
             // extract and print my_metagraph
             MyMetaGraph my_metagraph = metagraph.carve_for_rank(rank);
-            System.out.println(rank + " " + my_metagraph);
+//            System.out.println(rank + " " + my_metagraph);
             my_metagraph.write_to_json(String.format("%s_mg_%d.json",prefix,rank));
 
             // extract and print subscenario
