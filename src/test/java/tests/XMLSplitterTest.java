@@ -16,12 +16,12 @@ public class XMLSplitterTest {
         String [] args = {prefix,config_file,String.format("%d",num_partitions)};
         xmlsplitter.XMLSplitter.main(args);
 
-//        // try to run each one
-//        for(int i=0;i<num_partitions;i++){
-//            String cfg_file = String.format("%s_cfg_%d.xml",prefix,i);
-//            API api = OTM.load(cfg_file);
-//            api.run(0f, duration);
-//        }
+        // try to run each one
+        for(int i=0;i<num_partitions;i++){
+            String cfg_file = String.format("%s_cfg_%d.xml",prefix,i);
+            API api = OTM.load(cfg_file);
+            api.run(0f, duration);
+        }
 
         System.out.println("done");
 
