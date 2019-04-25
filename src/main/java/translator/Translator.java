@@ -6,6 +6,7 @@ import common.RoadConnection;
 import keys.KeyCommPathOrLink;
 import metagraph.MyMetaGraph;
 import metagraph.Neighbor;
+import models.AbstractFluidModel;
 import models.AbstractLaneGroup;
 import models.ctm.Cell;
 import models.ctm.LaneGroup;
@@ -43,13 +44,17 @@ public class Translator {
                 Link link = scenario.network.links.get(link_id);
                 for (RoadConnection rc : get_ordered_road_connections_entering(link)) {
                     rc2Link.put(rc.getId(),link);
-                    NodeModel nodemodel = rc.get_start_link().end_node.get_node_model();
+                    Link start_link = rc.get_start_link();
+                    NodeModel nodemodel = ((AbstractFluidModel)start_link.model).get_node_model_for_node(start_link.end_node.getId());
+//                    NodeModel nodemodel = rc.get_start_link().end_node.get_node_model();
                     if(nodemodel!=null)
                         rc2nodemodel.put(rc.getId(), nodemodel);
                 }
                 for(AbstractLaneGroup lg : link.lanegroups_flwdn.values()) {
                     lgid2lg.put(lg.id,(models.ctm.LaneGroup) lg);
-                    NodeModel nodemodel = lg.link.end_node.get_node_model();
+
+                    NodeModel nodemodel = ((AbstractFluidModel)lg.link.model).get_node_model_for_node(lg.link.end_node.getId());
+//                    NodeModel nodemodel = lg.link.end_node.get_node_model();
                     if(nodemodel!=null)
                         lg2nodemodel.put(lg.id, nodemodel);
                 }
@@ -215,8 +220,9 @@ public class Translator {
     private static Set<KeyCommPathOrLink> get_states_for_roadconnection(RoadConnection rc){
 
         // get node
-        Node node = rc.start_link.end_node;
-        NodeModel node_model = node.get_node_model();
+        NodeModel node_model = ((AbstractFluidModel)rc.start_link.model).get_node_model_for_node(rc.start_link.end_node.getId());
+//        Node node = rc.start_link.end_node;
+//        NodeModel node_model = node.get_node_model();
 
         if(node_model==null)
             System.err.println("I NEED A NODE MODEL HERE.");
