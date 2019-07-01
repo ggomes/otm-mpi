@@ -109,34 +109,34 @@
 
     <dependencies>
 
-        <!-- OTM BASE
+        <!-- OTM BASE -->
         <dependency>
             <groupId>otm</groupId>
             <artifactId>otm-base</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency> -->
+        </dependency>
 
-        <!-- OTM SIMULATOR
+        <!-- OTM SIMULATOR -->
         <dependency>
             <groupId>otm</groupId>
             <artifactId>otm-sim</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency> -->
+        </dependency>
 
-        <!-- JUNIT
+        <!-- JUNIT -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
             <scope>test</scope>
-        </dependency> -->
+        </dependency>
 
-        <!-- JSON
+        <!-- JSON -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
-        </dependency> -->
+        </dependency>
 
     </dependencies>
 
