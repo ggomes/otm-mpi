@@ -185,7 +185,7 @@ public class XMLSplitter {
                 linkset.retainAll(keep_links);
 
                 String filtered_subnet_links = String.join(",", linkset.stream().map(x -> x.toString()).collect(Collectors.toSet()));
-                System.out.println(filtered_subnet_links);
+                // System.out.println(filtered_subnet_links);
 
                 jaxb.Subnetwork subsubnet = new jaxb.Subnetwork();
                 subsubnet.setId(subnetid);
