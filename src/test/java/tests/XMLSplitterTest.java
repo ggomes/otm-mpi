@@ -10,7 +10,7 @@ public class XMLSplitterTest {
         float duration = 1000f;
         int num_partitions = 2;
         String config_file = "config/50_nodes.xml";
-        String prefix = "test/50_2/50";
+        String prefix = "test/50_x";
 
         // split the config file
         String [] args = {prefix,config_file,String.format("%d",num_partitions)};
@@ -20,7 +20,9 @@ public class XMLSplitterTest {
         for(int i=0;i<num_partitions;i++){
             String cfg_file = String.format("%s_cfg_%d.xml",prefix,i);
             API api = OTM.load(cfg_file);
+            System.out.println("Running partioned file " + i);
             api.run(0f, duration);
+
         }
 
         System.out.println("done");
