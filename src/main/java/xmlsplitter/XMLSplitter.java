@@ -6,10 +6,16 @@ import metagraph.MetaGraph;
 import metagraph.MyMetaGraph;
 import metagraph.Neighbor;
 import metis.MetisManager;
+import org.xml.sax.SAXException;
 import xml.JaxbLoader;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBException;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -178,11 +184,19 @@ public class XMLSplitter {
         try {
             javax.xml.bind.JAXBContext jaxbCtx = javax.xml.bind.JAXBContext.newInstance(sub_scenario.getClass().getPackage().getName());
             javax.xml.bind.Marshaller marshaller = jaxbCtx.createMarshaller();
+
+            SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            InputStream resourceAsStream = JaxbLoader.class.getResourceAsStream("/otm.xsd");
+            Schema schema = sf.newSchema(new StreamSource(resourceAsStream));
+            marshaller.setSchema(schema);
+
             marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_ENCODING, "UTF-8"); //NOI18N
             marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             File file = new File( filename );
             marshaller.marshal( sub_scenario, file );
         } catch (JAXBException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
             e.printStackTrace();
         }
     }
