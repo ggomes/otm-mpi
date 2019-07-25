@@ -77,7 +77,6 @@ public class XMLSplitter {
 
         Graph mygraph = my_metagraph.mygraph;
         jaxb.Network base_network = base_scenario.scenario.getNetwork();
-
         // keep all nodes in the sub graph
         Set<Long> keep_nodes = new HashSet<>();
         keep_nodes.addAll(mygraph.nodes);
@@ -175,6 +174,31 @@ public class XMLSplitter {
             for (jaxb.SplitNode splitnode : base_scenario.scenario.getSplits().getSplitNode())
                 if (keep_nodes.contains(splitnode.getNodeId()))
                     splits.getSplitNode().add(splitnode);
+        }
+
+        // subnetworks
+        jaxb.Subnetworks subsubnets = new jaxb.Subnetworks();
+        subscenario.setSubnetworks(subsubnets);
+        jaxb.Subnetworks basesubnetworks = base_scenario.scenario.getSubnetworks();
+        if (basesubnetworks != null) {
+            Integer subnetid = 1;
+            for (jaxb.Subnetwork basesubnet : basesubnetworks.getSubnetwork()){
+                String basesubnetcontent = basesubnet.getContent();
+                List<String> subnetlist = Arrays.asList(basesubnetcontent.split(","));
+                Set<Long> linkset = subnetlist.stream().map(x -> Long.parseLong(x)).collect(Collectors.toSet());
+
+                // Only keep links that exist in the metis cut graph
+                linkset.retainAll(keep_links);
+
+                String filtered_subnet_links = String.join(",", linkset.stream().map(x -> x.toString()).collect(Collectors.toSet()));
+                // System.out.println(filtered_subnet_links);
+
+                jaxb.Subnetwork subsubnet = new jaxb.Subnetwork();
+                subsubnet.setId(subnetid);
+                subsubnet.setContent(filtered_subnet_links);
+                subsubnets.getSubnetwork().add(subsubnet);
+                subnetid += 1;
+            }
         }
 
         return subscenario;
