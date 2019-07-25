@@ -3,7 +3,7 @@ Open Traffic Models - MPI communication: This a parallized version of the [OTM](
 
 # Installation
 
-## Environment
+## environment
 ```
 export OTMSIMJARNAME=otm-sim-1.0-20190725.163255-36-jar-with-dependencies.jar
 export OTMMPIHOME=$HOME/otm-mpi
@@ -27,8 +27,10 @@ make install
 ```
 cd ~
 git clone https://github.com/ggomes/otm-mpi.git
+```
 
 ## download otm-sim
+```
 cd ~
 wget https://mymavenrepo.com/repo/XtcMAROnIu3PyiMCmbdY/otm/otm-sim/1.0-SNAPSHOT/$OTMSIMJARNAME
 mv $OTMSIMJARNAME $OTMSIMJAR
