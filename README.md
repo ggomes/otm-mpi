@@ -3,8 +3,8 @@ Open Traffic Models - MPI communication: This a parallized version of the [OTM](
 
 # Installation
 
-'''
-# openmpi
+```
+openmpi
 wget https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.0.tar.gz
 tar -xvf openmpi-3.1.0.tar.gz
 rm openmpi-3.1.0.tar.gz
@@ -41,7 +41,7 @@ cd $OTMMPIHOME/src/main/java
 javac -d $OTMMPIHOME/out_javac -cp $OTMSIMJAR:$OTMMPIHOME/lib/* metis/*.java metagraph/*.java translator/*.java xmlsplitter/*.java
 cd $OTMMPIHOME/out_javac
 java -cp $OTMSIMJAR:$OTMMPIHOME/lib/*:. xmlsplitter.XMLSplitter $OTMMPIHOME/test/50 $OTMMPIHOME/config/50_nodes.xml 4
-'''
+```
 
 ## Third party dependencies
 
