@@ -1,9 +1,7 @@
 package runner;
 
 import api.APIopen;
-import error.OTMException;
 import mpi.MPI;
-import mpi.MPIException;
 import otm.OTMRunner;
 import metagraph.MyMetaGraph;
 import translator.Translator;
@@ -11,18 +9,17 @@ import translator.Translator;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class RunnerMPI {
 
-    private static final boolean run_mpi = false;
+    private static final boolean run_mpi = true;
 
     public static String prefix;
     public static int repetition;
-    public static float sim_dt;
     public static float duration;
     public static boolean writeoutput;
+    public static float out_dt;
 
     public static double metagraph_load_time;
     public static double load_subscenario_time;
@@ -33,20 +30,19 @@ public class RunnerMPI {
     /**
      * 0 string : [prefix]
      * 1 int : [repetition]
-     * 1 float : [sim_dt] sim dt in seconds
      * 2 float : [duration] sim duration in seconds
      * 3 boolean : [writeouput] true->write network state to files
+     * 4 float : [sim_dt] sim dt in seconds
      */
     public static void main(String[] args) throws Exception {
 
         prefix = args[0];
         repetition = Integer.parseInt(args[1]);
-        sim_dt = Float.parseFloat(args[2]);
-        duration = Float.parseFloat(args[3]);
-        writeoutput = Boolean.valueOf(args[4]);
+        duration = Float.parseFloat(args[2]);
+        writeoutput = Boolean.valueOf(args[3]);
+        out_dt = Float.parseFloat(args[4]);
 
         Timer timer;
-        float out_dt = sim_dt;
 
         // initialize mpi
         if(run_mpi)
@@ -63,7 +59,7 @@ public class RunnerMPI {
         if(num_processes==1){
 
             timer = new Timer(run_mpi);
-            APIopen api = new APIopen(OTM.load(String.format("%s_cfg_%d.xml",prefix,my_rank)));
+            APIopen api = new APIopen(OTM.load(String.format("%s_cfg_%d.xml",prefix,my_rank),false));
             OTM.initialize(api.scenario(), new RunParameters(null, null, null, 0f, duration));
             if(writeoutput)
                 api.api.request_links_veh(output_prefix,output_folder, null, api.api.get_link_ids(), out_dt);
@@ -89,7 +85,7 @@ public class RunnerMPI {
 
         // extract the subscenario for this rank
         timer = new Timer(run_mpi);
-        APIopen api = new APIopen(OTM.load(String.format("%s_cfg_%d.xml",prefix,my_rank)));
+        APIopen api = new APIopen(OTM.load(String.format("%s_cfg_%d.xml",prefix,my_rank),false));
         OTM.initialize(api.scenario(), new RunParameters(null, null, null, 0f, duration));
         if(writeoutput)
             api.api.request_links_veh(output_prefix,output_folder, null, api.api.get_link_ids(), out_dt);
