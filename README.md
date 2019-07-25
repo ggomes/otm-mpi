@@ -3,14 +3,16 @@ Open Traffic Models - MPI communication: This a parallized version of the [OTM](
 
 # Installation
 
+## Environment
 ```
-% Environment
 export OTMSIMJARNAME=otm-sim-1.0-20190725.163255-36-jar-with-dependencies.jar
 export OTMMPIHOME=$HOME/otm-mpi
 export OTMSIMJAR=$OTMMPIHOME/lib/otm-sim.jar
 export PATH=/opt/apps/intel18/metis/5.0.2/bin:$PATH
+```
 
-% install openmpi
+## install openmpi
+```
 cd ~
 wget https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.0.tar.gz
 tar -xvf openmpi-3.1.0.tar.gz
@@ -19,24 +21,32 @@ cd ~/openmpi-3.1.0
 ./configure --enable-mpi-java --with-jdk-bindir=$JAVA_HOME/bin --with-jdk-headers=$JAVA_HOME/include --prefix=$HOME/openmpi-3.1.0
 make all
 make install
+```
 
-% clone otm-mpi
+## clone otm-mpi
+```
 cd ~
 git clone https://github.com/ggomes/otm-mpi.git
 
-% download otm-sim
+## download otm-sim
 cd ~
 wget https://mymavenrepo.com/repo/XtcMAROnIu3PyiMCmbdY/otm/otm-sim/1.0-SNAPSHOT/$OTMSIMJARNAME
 mv $OTMSIMJARNAME $OTMSIMJAR
+```
 
-% compile otm-mpi
+## compile otm-mpi
+```
 cd $OTMMPIHOME/src/main/java
 mpijavac -d $OTMMPIHOME/out_mpijavac -cp $OTMSIMJAR:$OTMMPIHOME/lib/* runner/Timer.java metis/*.java xmlsplitter/*.java metagraph/*.java otm/*.java translator/*.java runner/RunnerMPI.java
+```
 
-% activate metis
+## activate metis
+```
 module load metis
+```
 
-% test 
+## test 
+```
 cd $OTMMPIHOME/src/main/java
 javac -d $OTMMPIHOME/out_javac -cp $OTMSIMJAR:$OTMMPIHOME/lib/* metis/*.java metagraph/*.java translator/*.java xmlsplitter/*.java
 cd $OTMMPIHOME/out_javac
