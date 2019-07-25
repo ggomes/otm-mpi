@@ -42,6 +42,39 @@ javac -d $OTMMPIHOME/out_javac -cp $OTMSIMJAR:$OTMMPIHOME/lib/* metis/*.java met
 cd $OTMMPIHOME/out_javac
 java -cp $OTMSIMJAR:$OTMMPIHOME/lib/*:. xmlsplitter.XMLSplitter $OTMMPIHOME/test/50 $OTMMPIHOME/config/50_nodes.xml 4
 ```
+## Miscellaneous items
+
+### additional environment variables
+```
+export PATH=$HOME/openmpi-3.1.0/bin:$PATH
+export PATH=/usr/lib/jvm/java-8-oracle/bin:$PATH
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/openmpi-3.1.0/lib
+```
+
+### cmake (to build openmpi)
+```
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:george-edison55/cmake-3.x
+sudo apt update
+sudo apt install cmake
+```
+
+### git
+```
+sudo add-apt-repository ppa:git-core/ppa
+sudo apt update
+sudo apt install git
+```
+
+### java
+```
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt update
+sudo apt install oracle-java8-installer
+sudo update-alternatives --config java
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+cd ~
+```
 
 # Scripts
 * ./run_splitter.sh : Test offline scenario splitting with a small network.
