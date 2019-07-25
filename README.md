@@ -22,7 +22,7 @@ source ~/.bashrc
 
 % otm-sim
 cd ~
-export OTMSIMJARNAME=otm-sim-1.0-20190724.201518-33-jar-with-dependencies.jar
+export OTMSIMJARNAME=otm-sim-1.0-20190725.163255-36-jar-with-dependencies.jar
 echo 'export OTMSIMJAR=${OTMMPIHOME}/lib/otm-sim.jar' >> ~/.bashrc
 source ~/.bashrc
 wget https://mymavenrepo.com/repo/XtcMAROnIu3PyiMCmbdY/otm/otm-sim/1.0-SNAPSHOT/$OTMSIMJARNAME
