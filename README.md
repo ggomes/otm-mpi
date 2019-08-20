@@ -4,7 +4,7 @@ Open Traffic Models - MPI communication: This a parallized version of the [OTM](
 # otm-mpi scaling
 The figure below show the scaling otm-mpi when simulating a synthetic grid network with 62500 nodes, 170000 Links, and 12500 origin-destination pairs. We observed a time reduction from 15,000 sec to 20 sec.
 
-![](https://github.com/ugirumurera/otm-mpi/blob/master/OTM_Scaling.png =100x)
+<img src="https://github.com/ugirumurera/otm-mpi/blob/master/OTM_Scaling.png" width="100"
 
 # Reference
 Ugirumurera, Juliette, and Gomes, Gabriel. OTM-MPI (Open Traffic Models - MPI). Computer Software. https://github.com/ggomes/otm-mpi. USDOE. 25 Oct. 2018. Web. doi:10.11578/dc.20181030.1.
