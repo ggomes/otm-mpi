@@ -7,6 +7,7 @@ The figure below show the scaling otm-mpi when simulating a synthetic grid netwo
 <p align="center">
 <img src="https://github.com/ugirumurera/otm-mpi/blob/master/OTM_Scaling.png" width="50%">
 </p>
+
 # Reference
 Ugirumurera, Juliette, and Gomes, Gabriel. OTM-MPI (Open Traffic Models - MPI). Computer Software. https://github.com/ggomes/otm-mpi. USDOE. 25 Oct. 2018. Web. doi:10.11578/dc.20181030.1.
 
