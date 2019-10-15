@@ -1,7 +1,6 @@
 package tests;
 
-import api.API;
-import runner.OTM;
+import api.OTM;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,9 +40,9 @@ public class CompareVeh {
         String serial_prefix = String.format("%s_serial",prefix_name);
 
         // run serial
-        API api = OTM.load(config_file);
-        api.request_links_veh(serial_prefix,output_folder,null,api.get_link_ids(),out_dt);
-        api.run(0f,duration);
+        OTM otm = OTM.load(config_file);
+        otm.output.request_links_veh(serial_prefix,output_folder,null,otm.scenario.get_link_ids(),out_dt);
+        otm.run(0f,duration);
 
         // load
         VehInfo serial_vehs = readVehicles(prefix+"_serial");

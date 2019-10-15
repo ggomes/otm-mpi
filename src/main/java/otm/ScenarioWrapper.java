@@ -1,4 +1,4 @@
-package xmlsplitter;
+package otm;
 
 import java.util.*;
 

@@ -7,6 +7,7 @@ import metagraph.MyMetaGraph;
 import metagraph.Neighbor;
 import metis.MetisManager;
 import org.xml.sax.SAXException;
+import otm.ScenarioWrapper;
 import xml.JaxbLoader;
 
 import javax.xml.XMLConstants;

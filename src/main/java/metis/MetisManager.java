@@ -1,7 +1,7 @@
 package metis;
 
 import utils.OTMUtils;
-import xmlsplitter.ScenarioWrapper;
+import otm.ScenarioWrapper;
 
 import java.io.*;
 import java.util.*;

@@ -4,11 +4,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import metis.MetisManager;
-import xmlsplitter.ScenarioWrapper;
+import otm.ScenarioWrapper;
 
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,25 +54,27 @@ public class MetaGraph {
 
     public void write_to_json(String filename){
 
-        JSONObject json = new JSONObject();
-        json.put("num_graphs", num_graphs);
+        // TODO G REMOVED THIS
 
-        JSONArray jsonpairs = new JSONArray();
-        json.put("pairs", jsonpairs);
-        for(Map.Entry<PairKey, MetaGraphPair> e : pairs.entrySet()){
-            JSONObject pairobj = new JSONObject();
-            jsonpairs.add(pairobj);
-            pairobj.put("pairkey",e.getKey().toJson());
-            pairobj.put("metagraphpair",e.getValue().toJson());
-        }
-
-        //Write JSON file
-        try (FileWriter file = new FileWriter(filename)) {
-            file.write(json.toJSONString());
-            file.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        JSONObject json = new JSONObject();
+//        json.put("num_graphs", num_graphs);
+//
+//        JSONArray jsonpairs = new JSONArray();
+//        json.put("pairs", jsonpairs);
+//        for(Map.Entry<PairKey, MetaGraphPair> e : pairs.entrySet()){
+//            JSONObject pairobj = new JSONObject();
+//            jsonpairs.add(pairobj);
+//            pairobj.put("pairkey",e.getKey().toJson());
+//            pairobj.put("metagraphpair",e.getValue().toJson());
+//        }
+//
+//        //Write JSON file
+//        try (FileWriter file = new FileWriter(filename)) {
+//            file.write(json.toJSONString());
+//            file.flush();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     ////////////////////////////////////////

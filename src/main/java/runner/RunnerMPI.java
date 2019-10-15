@@ -1,6 +1,7 @@
 package runner;
 
-import api.APIopen;
+import api.OTM;
+import api.OTMdev;
 import mpi.MPI;
 import otm.OTMRunner;
 import metagraph.MyMetaGraph;
@@ -59,15 +60,14 @@ public class RunnerMPI {
         if(num_processes==1){
 
             timer = new Timer(run_mpi);
-            APIopen api = new APIopen(OTM.load(String.format("%s_cfg_%d.xml",prefix,my_rank),false));
-            OTM.initialize(api.scenario(), new RunParameters(null, null, null, 0f, duration));
+            OTMdev otm = new OTMdev(String.format("%s_cfg_%d.xml",prefix,my_rank));
+            otm.otm.initialize(0f);
             if(writeoutput)
-                api.api.request_links_veh(output_prefix,output_folder, null, api.api.get_link_ids(), out_dt);
+                otm.otm.output.request_links_veh(output_prefix,output_folder, null, otm.otm.scenario.get_link_ids(), out_dt);
             load_subscenario_time = timer.get_total_time();
 
             timer = new Timer(run_mpi);
-            RunParameters runParam = new RunParameters(null, null, null, 0f,duration);
-            OTMRunner.run(api.scenario(), runParam);
+            OTMRunner.run(otm.scenario, 0f,duration);
             mpi_run_time = timer.get_total_time();
 
             write_output(output_folder,output_prefix,null);
@@ -85,10 +85,10 @@ public class RunnerMPI {
 
         // extract the subscenario for this rank
         timer = new Timer(run_mpi);
-        APIopen api = new APIopen(OTM.load(String.format("%s_cfg_%d.xml",prefix,my_rank),false));
-        OTM.initialize(api.scenario(), new RunParameters(null, null, null, 0f, duration));
+        OTMdev otm = new OTMdev(String.format("%s_cfg_%d.xml",prefix,my_rank));
+        otm.otm.initialize(0f);
         if(writeoutput)
-            api.api.request_links_veh(output_prefix,output_folder, null, api.api.get_link_ids(), out_dt);
+            otm.otm.output.request_links_veh(output_prefix,output_folder, null, otm.otm.scenario.get_link_ids(), out_dt);
         load_subscenario_time = timer.get_total_time();
 
         // create communicator and translator ...........................
@@ -97,13 +97,12 @@ public class RunnerMPI {
         mpi.GraphComm comm = run_mpi ?
                 MPI.COMM_WORLD.createDistGraphAdjacent(neighbors, neighbors, MPI.INFO_NULL, false) :
                 null;
-        Translator translator = new Translator(my_metagraph,api.scenario());
+        Translator translator = new Translator(my_metagraph,otm.scenario);
         create_translator_time = timer.get_total_time();
 
         // run ...................................
         timer = new Timer(run_mpi);
-        RunParameters runParam = new RunParameters(null, null, null, 0f,duration);
-        comm_time = OTMRunner.run(api.scenario(), runParam,translator,comm);
+        comm_time = OTMRunner.run(otm.scenario, 0f,duration,translator,comm);
         mpi_run_time = timer.get_total_time();
 
         // write timers ...........................

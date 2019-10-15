@@ -8,26 +8,25 @@ import error.OTMException;
 import models.AbstractFluidModel;
 import models.AbstractModel;
 import mpi.MPIException;
-import runner.RunParameters;
 import runner.Scenario;
 import runner.Timer;
 import translator.Translator;
 
 public class OTMRunner {
 
-    public static double run(Scenario scenario, RunParameters runParams, Translator translator, mpi.GraphComm comm) throws OTMException, MPIException {
+    public static double run(Scenario scenario, float start_time, float duration, Translator translator, mpi.GraphComm comm) throws OTMException, MPIException {
         Timer comm_timer = new Timer(true);
-        Dispatcher dispatcher = new Dispatcher(runParams.start_time);
-        scenario.initialize(dispatcher,runParams);
-        run_mpi(scenario,runParams.duration,dispatcher,translator,comm,comm_timer);
+        Dispatcher dispatcher = new Dispatcher(start_time);
+        scenario.initialize(dispatcher);
+        run_mpi(scenario,duration,dispatcher,translator,comm,comm_timer);
         scenario.is_initialized = false;
         return comm_timer.get_total_time();
     }
 
-    public static void run(Scenario scenario, RunParameters runParams) throws OTMException {
-        Dispatcher dispatcher = new Dispatcher(runParams.start_time);
-        scenario.initialize(dispatcher,runParams);
-        run_non_mpi(scenario,runParams.duration,dispatcher);
+    public static void run(Scenario scenario, float start_time, float duration) throws OTMException {
+        Dispatcher dispatcher = new Dispatcher(start_time);
+        scenario.initialize(dispatcher);
+        run_non_mpi(scenario,duration,dispatcher);
         scenario.is_initialized = false;
     }
 

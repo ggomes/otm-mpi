@@ -1,6 +1,6 @@
 package metagraph;
 
-import com.google.gson.JsonArray;
+//import com.google.gson.JsonArray;
 import org.json.simple.JSONArray;
 
 import java.util.Objects;
@@ -21,12 +21,12 @@ public class PairKey {
         this.high = (long) jarr.get(1);
     }
 
-    public JsonArray toJson(){
-        JsonArray arr = new JsonArray();
-        arr.add(low);
-        arr.add(high);
-        return arr;
-    }
+//    public JsonArray toJson(){
+//        JsonArray arr = new JsonArray();
+//        arr.add(low);
+//        arr.add(high);
+//        return arr;
+//    }
 
     @Override
     public boolean equals(Object o) {
