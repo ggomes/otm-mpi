@@ -75,7 +75,11 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <release>8</release>
+                    <release>11</release>
+<!--                    <compilerArgs>-->
+<!--                        <arg>-verbose</arg>-->
+<!--                        <arg>-Xlint:all,-options,-path</arg>-->
+<!--                    </compilerArgs>-->
                 </configuration>
             </plugin>
 
@@ -84,9 +88,9 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <archive>
-<!--                        <manifest>-->
-<!--                            <mainClass>otmui.MainApp</mainClass>-->
-<!--                        </manifest>-->
+                        <manifest>
+                            <mainClass>xmlsplitter.XMLSplitter</mainClass>
+                        </manifest>
                         <manifestEntries>
                             <git-SHA-1>${buildNumber}</git-SHA-1>
                         </manifestEntries>
@@ -102,6 +106,25 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <source>${env.OPENMPIJAVA}</source>
+                            </sources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
