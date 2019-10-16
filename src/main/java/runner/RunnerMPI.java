@@ -33,7 +33,7 @@ public class RunnerMPI {
      * 1 int : [repetition]
      * 2 float : [duration] sim duration in seconds
      * 3 boolean : [writeouput] true->write network state to files
-     * 4 float : [sim_dt] sim dt in seconds
+     * 4 float : [out_dt] sim dt in seconds
      */
     public static void main(String[] args) throws Exception {
 
@@ -60,7 +60,7 @@ public class RunnerMPI {
         if(num_processes==1){
 
             timer = new Timer(run_mpi);
-            OTMdev otm = new OTMdev(String.format("%s_cfg_%d.xml",prefix,my_rank));
+            OTMdev otm = new OTMdev(new OTM(String.format("%s_cfg_%d.xml",prefix,my_rank),false,false));
             otm.otm.initialize(0f);
             if(writeoutput)
                 otm.otm.output.request_links_veh(output_prefix,output_folder, null, otm.otm.scenario.get_link_ids(), out_dt);
@@ -85,7 +85,7 @@ public class RunnerMPI {
 
         // extract the subscenario for this rank
         timer = new Timer(run_mpi);
-        OTMdev otm = new OTMdev(String.format("%s_cfg_%d.xml",prefix,my_rank));
+        OTMdev otm = new OTMdev(new OTM(String.format("%s_cfg_%d.xml",prefix,my_rank),false,false));
         otm.otm.initialize(0f);
         if(writeoutput)
             otm.otm.output.request_links_veh(output_prefix,output_folder, null, otm.otm.scenario.get_link_ids(), out_dt);
@@ -97,6 +97,7 @@ public class RunnerMPI {
         mpi.GraphComm comm = run_mpi ?
                 MPI.COMM_WORLD.createDistGraphAdjacent(neighbors, neighbors, MPI.INFO_NULL, false) :
                 null;
+
         Translator translator = new Translator(my_metagraph,otm.scenario);
         create_translator_time = timer.get_total_time();
 

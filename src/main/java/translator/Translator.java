@@ -89,7 +89,6 @@ public class Translator {
                     for (KeyCommPathOrLink key : get_ordered_states_for_lanegroup(lg))
                         decoder.add_item(neighbor.rank, new MessageItemLG(lg, key));
 
-
             // send message (encoder) .............................................................
             // + for all relative sink l, all roadconnections entering l (rc), and all states that use rc.
             // + for all relative sources l, all lanegroups in l (lg), and all states that use lg.
