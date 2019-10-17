@@ -28,7 +28,7 @@ sudo apt install cmake
 ```
 export OTMMPIHOME=[otm-mpi root folder]
 export OTMSIMJARNAME=otm-sim-1.0-20190924.222012-1-jar-with-dependencies.jar
-export OTMSIMJAR=$OTMMPIHOME/lib/otm-sim.jar
+export OTMSIMJAR=[wherever you wish to save the OTM jar file]
 ```
 
 ## OTM
@@ -66,7 +66,8 @@ module load metis
 
 ## clone and build otm-mpi
 ```
-cd ~
+cd $OTMMPIHOME
+cd ..
 git clone https://github.com/ggomes/otm-mpi.git
 cd $OTMMPIHOME/scripts
 ./build_all.sh
