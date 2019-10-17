@@ -10,19 +10,11 @@ The figure below show the scaling otm-mpi when simulating a synthetic grid netwo
 
 # Installation
 
-## Java 8
-```
-sudo add-apt-repository ppa:webupd8team/java
-sudo apt update
-sudo apt install oracle-java8-installer
-sudo update-alternatives --config java
-export JAVA_HOME=/usr/lib/jvm/java-8-oracle
-cd ~
-```
-Add Java to your path:
-```
-export PATH=/usr/lib/jvm/java-8-oracle/bin:$PATH
-```
+## Java 11
+
+Get it [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html)
++ Assign JAVA_HOME
++ Add JAVA_HOME to your PATH
 
 ## cmake
 ```
@@ -34,8 +26,8 @@ sudo apt install cmake
 
 ## environment variables
 ```
-export OTMMPIHOME=$HOME/otm-mpi
-export OTMSIMJARNAME=otm-sim-1.0-20190725.163255-36-jar-with-dependencies.jar
+export OTMMPIHOME=[otm-mpi root folder]
+export OTMSIMJARNAME=otm-sim-1.0-20190924.222012-1-jar-with-dependencies.jar
 export OTMSIMJAR=$OTMMPIHOME/lib/otm-sim.jar
 ```
 
@@ -43,7 +35,7 @@ export OTMSIMJAR=$OTMMPIHOME/lib/otm-sim.jar
 Download the otm-sim jar file.
 ```
 cd ~
-wget https://mymavenrepo.com/repo/XtcMAROnIu3PyiMCmbdY/otm/otm-sim/1.0-SNAPSHOT/$OTMSIMJARNAME
+wget https://mymavenrepo.com/repo/XtcMAROnIu3PyiMCmbdY/edu/berkeley/ucbtrans/otm-sim/1.0-SNAPSHOT/$OTMSIMJARNAME
 mv $OTMSIMJARNAME $OTMSIMJAR
 ```
 
@@ -76,21 +68,11 @@ module load metis
 ```
 cd ~
 git clone https://github.com/ggomes/otm-mpi.git
-cd $OTMMPIHOME/src/main/java
-mpijavac -d $OTMMPIHOME/out_mpijavac -cp $OTMSIMJAR:$OTMMPIHOME/lib/* runner/Timer.java metis/*.java xmlsplitter/*.java metagraph/*.java otm/*.java translator/*.java runner/RunnerMPI.java
+cd $OTMMPIHOME/scripts
+./build_all.sh
 ```
 
 ## test 
 ```
-cd $OTMMPIHOME/src/main/java
-javac -d $OTMMPIHOME/out_javac -cp $OTMSIMJAR:$OTMMPIHOME/lib/* metis/*.java metagraph/*.java translator/*.java xmlsplitter/*.java
-cd $OTMMPIHOME/out_javac
-java -cp $OTMSIMJAR:$OTMMPIHOME/lib/*:. xmlsplitter.XMLSplitter $OTMMPIHOME/test/50 $OTMMPIHOME/config/50_nodes.xml 4
+./test_run_all.sh
 ```
-
-# Scripts
-* ./run_splitter.sh : Test offline scenario splitting with a small network.
-* ./compile_mpi.sh : Compile the program using mpijavac.
-* ./compare_veh.sh : Run small example with 2 processes, and compare result to single-process run. 
-* ./run_mpi.sh : Run small example with 4 processes.
-
