@@ -1,0 +1,332 @@
+<?xml version="1.0" ?>
+<scenario xmlns="opentrafficmodels">
+	<commodities>
+		<commodity id="1" name="global" pathfull="false"/>
+	</commodities>
+	<models>
+		<model type="ctm" name="ctm2sec" is_default="true">
+                        <model_params sim_dt="1" max_cell_length="100"/>
+                </model>
+	</models>
+	<network>
+		<nodes>
+			<node id="0" x="575841.431298" y="-175612.502805"/>
+			<node id="1" x="575240.70661" y="-176807.729559"/>
+			<node id="2" x="575459.380413" y="-175555.980439"/>
+			<node id="3" x="575623.330237" y="-175687.214477"/>
+			<node id="4" x="575924.127646" y="-175513.565203"/>
+			<node id="5" x="575931.357492" y="-175661.545021"/>
+			<node id="6" x="575792.499071" y="-176572.16846"/>
+			<node id="7" x="575717.597584" y="-175382.18308"/>
+			<node id="8" x="575725.193565" y="-175524.26372"/>
+			<node id="9" x="575733.373755" y="-175670.548185"/>
+			<node id="10" x="575635.809258" y="-175529.194705"/>
+			<node id="11" x="575787.229897" y="-174665.73909"/>
+			<node id="12" x="575454.172147" y="-175568.025146"/>
+			<node id="13" x="575685.190106" y="-175663.343352"/>
+			<node id="14" x="575771.362634" y="-174666.66469"/>
+			<node id="15" x="575844.955315" y="-175728.711036"/>
+			<node id="16" x="575827.441201" y="-175518.719594"/>
+			<node id="17" x="575835.825393" y="-175668.664025"/>
+			<node id="18" x="575245.70661" y="-176802.729559"/>
+			<node id="19" x="575797.499071" y="-176567.16846"/>
+			<node id="20" x="575849.955315" y="-175723.711036"/>
+			<node id="21" x="575846.431298" y="-175607.502805"/>
+			<node id="22" x="575464.380413" y="-175550.980439"/>
+			<node id="23" x="575929.127646" y="-175508.565203"/>
+			<node id="24" x="575792.229897" y="-174660.73909"/>
+		</nodes>
+		<links>
+			<link end_node_id="5" full_lanes="2" id="0" length="80.53" roadparam="0" start_node_id="17"/>
+			<link end_node_id="17" full_lanes="2" id="1" length="76.47" roadparam="1" start_node_id="9"/>
+			<link end_node_id="7" full_lanes="2" id="2" length="136.59" roadparam="2" start_node_id="8"/>
+			<link end_node_id="8" full_lanes="2" id="3" length="128.87" roadparam="3" start_node_id="9"/>
+			<link end_node_id="6" full_lanes="2" id="4" length="885.0" roadparam="4" start_node_id="15"/>
+			<link end_node_id="9" full_lanes="1" id="5" length="1228.87" roadparam="5" start_node_id="1"/>
+			<link end_node_id="2" full_lanes="2" id="6" length="280.21" roadparam="6" start_node_id="9"/>
+			<link end_node_id="17" full_lanes="2" id="7" length="79.88" roadparam="7" start_node_id="5"/>
+			<link end_node_id="9" full_lanes="2" id="8" length="76.47" roadparam="8" start_node_id="17"/>
+			<link end_node_id="13" full_lanes="1" id="9" length="63.55" roadparam="9" start_node_id="3"/>
+			<link end_node_id="8" full_lanes="1" id="10" length="79.01" roadparam="10" start_node_id="10"/>
+			<link end_node_id="16" full_lanes="1" id="11" length="76.03" roadparam="11" start_node_id="8"/>
+			<link end_node_id="4" full_lanes="1" id="12" length="80.95" roadparam="12" start_node_id="16"/>
+			<link end_node_id="8" full_lanes="2" id="13" length="136.59" roadparam="13" start_node_id="7"/>
+			<link end_node_id="9" full_lanes="2" id="14" length="128.87" roadparam="14" start_node_id="8"/>
+			<link end_node_id="16" full_lanes="2" id="15" length="847.36" roadparam="15" start_node_id="14"/>
+			<link end_node_id="17" full_lanes="2" id="16" length="133.42" roadparam="16" start_node_id="16"/>
+			<link end_node_id="15" full_lanes="2" id="17" length="887.82" roadparam="17" start_node_id="6"/>
+			<link end_node_id="13" full_lanes="2" id="18" length="245.48" roadparam="18" start_node_id="12"/>
+			<link end_node_id="9" full_lanes="3" id="19" length="28.78" roadparam="19" start_node_id="13"/>
+			<link end_node_id="17" full_lanes="2" id="20" length="49.27" roadparam="20" start_node_id="15"/>
+			<link end_node_id="15" full_lanes="2" id="21" length="47.43" roadparam="21" start_node_id="17"/>
+			<link end_node_id="0" full_lanes="2" id="22" length="44.89" roadparam="22" start_node_id="17"/>
+			<link end_node_id="16" full_lanes="2" id="23" length="88.22" roadparam="23" start_node_id="0"/>
+			<link end_node_id="11" full_lanes="2" id="24" length="847.29" roadparam="24" start_node_id="16"/>
+			<link end_node_id="1" full_lanes="1" id="25" length="1227.23" roadparam="25" start_node_id="9"/>
+			<link end_node_id="1" full_lanes="1" id="26" length="100" roadparam="26" start_node_id="18"/>
+			<link end_node_id="6" full_lanes="1" id="27" length="100" roadparam="27" start_node_id="19"/>
+			<link end_node_id="15" full_lanes="1" id="28" length="100" roadparam="28" start_node_id="20"/>
+			<link end_node_id="0" full_lanes="1" id="29" length="100" roadparam="29" start_node_id="21"/>
+			<link end_node_id="22" full_lanes="1" id="30" length="100" roadparam="30" start_node_id="2"/>
+			<link end_node_id="23" full_lanes="1" id="31" length="100" roadparam="31" start_node_id="4"/>
+			<link end_node_id="24" full_lanes="1" id="32" length="100" roadparam="32" start_node_id="11"/>
+		</links>
+		<roadparams>
+			<roadparam capacity="700" id="0" jam_density="27.9977601792" name="highway.primary" speed="100.008"/>
+			<roadparam capacity="700" id="1" jam_density="27.9977601792" name="highway.primary" speed="100.008"/>
+			<roadparam capacity="700" id="2" jam_density="27.9977601792" name="highway.secondary" speed="100.008"/>
+			<roadparam capacity="700" id="3" jam_density="27.9977601792" name="highway.secondary" speed="100.008"/>
+			<roadparam capacity="700" id="4" jam_density="27.9977601792" name="highway.secondary" speed="100.008"/>
+			<roadparam capacity="700" id="5" jam_density="35.00350035" name="highway.tertiary" speed="79.992"/>
+			<roadparam capacity="700" id="6" jam_density="27.9977601792" name="highway.primary" speed="100.008"/>
+			<roadparam capacity="700" id="7" jam_density="27.9977601792" name="highway.primary" speed="100.008"/>
+			<roadparam capacity="700" id="8" jam_density="27.9977601792" name="highway.primary" speed="100.008"/>
+			<roadparam capacity="700" id="9" jam_density="35.00350035" name="highway.motorway_link" speed="79.992"/>
+			<roadparam capacity="700" id="10" jam_density="55.9955203584" name="highway.residential" speed="50.004"/>
+			<roadparam capacity="700" id="11" jam_density="55.9955203584" name="highway.residential" speed="50.004"/>
+			<roadparam capacity="700" id="12" jam_density="55.9955203584" name="highway.residential" speed="50.004"/>
+			<roadparam capacity="700" id="13" jam_density="27.9977601792" name="highway.secondary" speed="100.008"/>
+			<roadparam capacity="700" id="14" jam_density="27.9977601792" name="highway.secondary" speed="100.008"/>
+			<roadparam capacity="700" id="15" jam_density="27.9977601792" name="highway.secondary" speed="100.008"/>
+			<roadparam capacity="700" id="16" jam_density="27.9977601792" name="highway.secondary" speed="100.008"/>
+			<roadparam capacity="700" id="17" jam_density="27.9977601792" name="highway.secondary" speed="100.008"/>
+			<roadparam capacity="700" id="18" jam_density="27.9977601792" name="highway.primary" speed="100.008"/>
+			<roadparam capacity="700" id="19" jam_density="27.9977601792" name="highway.primary" speed="100.008"/>
+			<roadparam capacity="700" id="20" jam_density="27.9977601792" name="highway.secondary" speed="100.008"/>
+			<roadparam capacity="700" id="21" jam_density="27.9977601792" name="highway.secondary" speed="100.008"/>
+			<roadparam capacity="700" id="22" jam_density="27.9977601792" name="highway.secondary" speed="100.008"/>
+			<roadparam capacity="700" id="23" jam_density="27.9977601792" name="highway.secondary" speed="100.008"/>
+			<roadparam capacity="700" id="24" jam_density="27.9977601792" name="highway.secondary" speed="100.008"/>
+			<roadparam capacity="700" id="25" jam_density="35.00350035" name="highway.tertiary" speed="79.992"/>
+			<roadparam capacity="2000" id="26" jam_density="100" name="source_link" speed="60"/>
+			<roadparam capacity="2000" id="27" jam_density="100" name="source_link" speed="60"/>
+			<roadparam capacity="2000" id="28" jam_density="100" name="source_link" speed="60"/>
+			<roadparam capacity="2000" id="29" jam_density="100" name="source_link" speed="60"/>
+			<roadparam capacity="2000" id="30" jam_density="100" name="sink_link" speed="60"/>
+			<roadparam capacity="2000" id="31" jam_density="100" name="sink_link" speed="60"/>
+			<roadparam capacity="2000" id="32" jam_density="100" name="sink_link" speed="60"/>
+		</roadparams>
+		<roadconnections>
+			<roadconnection id="0" in_link="0" in_link_lanes="2#2" out_link="7" out_link_lanes="2#2"/>
+			<roadconnection id="1" in_link="1" in_link_lanes="1#1" out_link="21" out_link_lanes="1#1"/>
+			<roadconnection id="2" in_link="1" in_link_lanes="1#1" out_link="0" out_link_lanes="1#1"/>
+			<roadconnection id="3" in_link="1" in_link_lanes="2#2" out_link="0" out_link_lanes="2#2"/>
+			<roadconnection id="4" in_link="1" in_link_lanes="2#2" out_link="22" out_link_lanes="2#2"/>
+			<roadconnection id="5" in_link="1" in_link_lanes="2#2" out_link="8" out_link_lanes="2#2"/>
+			<roadconnection id="6" in_link="2" in_link_lanes="2#2" out_link="13" out_link_lanes="2#2"/>
+			<roadconnection id="7" in_link="3" in_link_lanes="1#1" out_link="11" out_link_lanes="1#1"/>
+			<roadconnection id="8" in_link="3" in_link_lanes="1#1" out_link="2" out_link_lanes="1#1"/>
+			<roadconnection id="9" in_link="3" in_link_lanes="2#2" out_link="2" out_link_lanes="2#2"/>
+			<roadconnection id="10" in_link="3" in_link_lanes="2#2" out_link="14" out_link_lanes="2#2"/>
+			<roadconnection id="11" in_link="4" in_link_lanes="2#2" out_link="17" out_link_lanes="2#2"/>
+			<roadconnection id="12" in_link="5" in_link_lanes="1#1" out_link="1" out_link_lanes="1#1"/>
+			<roadconnection id="13" in_link="5" in_link_lanes="1#1" out_link="3" out_link_lanes="2#2"/>
+			<roadconnection id="14" in_link="5" in_link_lanes="1#1" out_link="6" out_link_lanes="2#2"/>
+			<roadconnection id="15" in_link="5" in_link_lanes="1#1" out_link="25" out_link_lanes="1#1"/>
+			<roadconnection id="16" in_link="7" in_link_lanes="1#1" out_link="22" out_link_lanes="1#1"/>
+			<roadconnection id="17" in_link="7" in_link_lanes="1#1" out_link="8" out_link_lanes="1#1"/>
+			<roadconnection id="18" in_link="7" in_link_lanes="2#2" out_link="8" out_link_lanes="2#2"/>
+			<roadconnection id="19" in_link="7" in_link_lanes="2#2" out_link="21" out_link_lanes="2#2"/>
+			<roadconnection id="20" in_link="7" in_link_lanes="2#2" out_link="0" out_link_lanes="2#2"/>
+			<roadconnection id="21" in_link="8" in_link_lanes="1#1" out_link="3" out_link_lanes="1#1"/>
+			<roadconnection id="22" in_link="8" in_link_lanes="1#1" out_link="6" out_link_lanes="1#1"/>
+			<roadconnection id="23" in_link="8" in_link_lanes="2#2" out_link="6" out_link_lanes="2#2"/>
+			<roadconnection id="24" in_link="8" in_link_lanes="2#2" out_link="25" out_link_lanes="1#1"/>
+			<roadconnection id="25" in_link="8" in_link_lanes="2#2" out_link="1" out_link_lanes="2#2"/>
+			<roadconnection id="26" in_link="9" in_link_lanes="1#1" out_link="19" out_link_lanes="1#1"/>
+			<roadconnection id="27" in_link="10" in_link_lanes="1#1" out_link="14" out_link_lanes="1#1"/>
+			<roadconnection id="28" in_link="10" in_link_lanes="1#1" out_link="11" out_link_lanes="1#1"/>
+			<roadconnection id="29" in_link="10" in_link_lanes="1#1" out_link="2" out_link_lanes="2#2"/>
+			<roadconnection id="30" in_link="11" in_link_lanes="1#1" out_link="16" out_link_lanes="1#1"/>
+			<roadconnection id="31" in_link="11" in_link_lanes="1#1" out_link="12" out_link_lanes="1#1"/>
+			<roadconnection id="32" in_link="11" in_link_lanes="1#1" out_link="24" out_link_lanes="2#2"/>
+			<roadconnection id="33" in_link="13" in_link_lanes="1#1" out_link="14" out_link_lanes="1#1"/>
+			<roadconnection id="34" in_link="13" in_link_lanes="2#2" out_link="14" out_link_lanes="2#2"/>
+			<roadconnection id="35" in_link="13" in_link_lanes="2#2" out_link="11" out_link_lanes="1#1"/>
+			<roadconnection id="36" in_link="13" in_link_lanes="2#2" out_link="2" out_link_lanes="2#2"/>
+			<roadconnection id="37" in_link="14" in_link_lanes="1#1" out_link="6" out_link_lanes="1#1"/>
+			<roadconnection id="38" in_link="14" in_link_lanes="1#1" out_link="25" out_link_lanes="1#1"/>
+			<roadconnection id="39" in_link="14" in_link_lanes="2#2" out_link="1" out_link_lanes="2#2"/>
+			<roadconnection id="40" in_link="14" in_link_lanes="2#2" out_link="3" out_link_lanes="2#2"/>
+			<roadconnection id="41" in_link="15" in_link_lanes="1#1" out_link="16" out_link_lanes="1#1"/>
+			<roadconnection id="42" in_link="15" in_link_lanes="2#2" out_link="16" out_link_lanes="2#2"/>
+			<roadconnection id="43" in_link="15" in_link_lanes="2#2" out_link="12" out_link_lanes="1#1"/>
+			<roadconnection id="44" in_link="15" in_link_lanes="2#2" out_link="24" out_link_lanes="2#2"/>
+			<roadconnection id="45" in_link="16" in_link_lanes="1#1" out_link="8" out_link_lanes="1#1"/>
+			<roadconnection id="46" in_link="16" in_link_lanes="1#1" out_link="21" out_link_lanes="1#1"/>
+			<roadconnection id="47" in_link="16" in_link_lanes="2#2" out_link="21" out_link_lanes="2#2"/>
+			<roadconnection id="48" in_link="16" in_link_lanes="2#2" out_link="0" out_link_lanes="2#2"/>
+			<roadconnection id="49" in_link="16" in_link_lanes="2#2" out_link="22" out_link_lanes="2#2"/>
+			<roadconnection id="50" in_link="17" in_link_lanes="1#1" out_link="20" out_link_lanes="1#1"/>
+			<roadconnection id="51" in_link="17" in_link_lanes="2#2" out_link="20" out_link_lanes="2#2"/>
+			<roadconnection id="52" in_link="17" in_link_lanes="2#2" out_link="4" out_link_lanes="2#2"/>
+			<roadconnection id="53" in_link="18" in_link_lanes="1#1" out_link="19" out_link_lanes="2#2"/>
+			<roadconnection id="54" in_link="18" in_link_lanes="2#2" out_link="19" out_link_lanes="3#3"/>
+			<roadconnection id="55" in_link="19" in_link_lanes="1#1" out_link="25" out_link_lanes="1#1"/>
+			<roadconnection id="56" in_link="19" in_link_lanes="1#1" out_link="1" out_link_lanes="1#1"/>
+			<roadconnection id="57" in_link="19" in_link_lanes="2#2" out_link="1" out_link_lanes="2#2"/>
+			<roadconnection id="58" in_link="19" in_link_lanes="3#3" out_link="3" out_link_lanes="2#2"/>
+			<roadconnection id="59" in_link="19" in_link_lanes="3#3" out_link="6" out_link_lanes="2#2"/>
+			<roadconnection id="60" in_link="20" in_link_lanes="1#1" out_link="0" out_link_lanes="1#1"/>
+			<roadconnection id="61" in_link="20" in_link_lanes="1#1" out_link="22" out_link_lanes="1#1"/>
+			<roadconnection id="62" in_link="20" in_link_lanes="2#2" out_link="22" out_link_lanes="2#2"/>
+			<roadconnection id="63" in_link="20" in_link_lanes="2#2" out_link="8" out_link_lanes="2#2"/>
+			<roadconnection id="64" in_link="20" in_link_lanes="2#2" out_link="21" out_link_lanes="2#2"/>
+			<roadconnection id="65" in_link="21" in_link_lanes="1#1" out_link="4" out_link_lanes="1#1"/>
+			<roadconnection id="66" in_link="21" in_link_lanes="2#2" out_link="4" out_link_lanes="2#2"/>
+			<roadconnection id="67" in_link="21" in_link_lanes="2#2" out_link="20" out_link_lanes="2#2"/>
+			<roadconnection id="68" in_link="22" in_link_lanes="1#1" out_link="23" out_link_lanes="1#1"/>
+			<roadconnection id="69" in_link="22" in_link_lanes="2#2" out_link="23" out_link_lanes="2#2"/>
+			<roadconnection id="70" in_link="23" in_link_lanes="1#1" out_link="12" out_link_lanes="1#1"/>
+			<roadconnection id="71" in_link="23" in_link_lanes="1#1" out_link="24" out_link_lanes="1#1"/>
+			<roadconnection id="72" in_link="23" in_link_lanes="2#2" out_link="24" out_link_lanes="2#2"/>
+			<roadconnection id="73" in_link="23" in_link_lanes="2#2" out_link="16" out_link_lanes="2#2"/>
+			<roadconnection id="74" in_link="25" in_link_lanes="1#1" out_link="5" out_link_lanes="1#1"/>
+			<roadconnection id="75" in_link="6" in_link_lanes="1#2" out_link="30" out_link_lanes="1#1"/>
+			<roadconnection id="76" in_link="12" in_link_lanes="1#1" out_link="31" out_link_lanes="1#1"/>
+			<roadconnection id="77" in_link="24" in_link_lanes="1#2" out_link="32" out_link_lanes="1#1"/>
+			<roadconnection id="78" in_link="26" in_link_lanes="1#1" out_link="5" out_link_lanes="1#1"/>
+			<roadconnection id="79" in_link="27" in_link_lanes="1#1" out_link="17" out_link_lanes="1#2"/>
+			<roadconnection id="80" in_link="28" in_link_lanes="1#1" out_link="4" out_link_lanes="1#2"/>
+			<roadconnection id="81" in_link="28" in_link_lanes="1#1" out_link="20" out_link_lanes="1#2"/>
+			<roadconnection id="82" in_link="29" in_link_lanes="1#1" out_link="23" out_link_lanes="1#2"/>
+		</roadconnections>
+	</network>
+	<demands>
+		<demand commodity_id="1" dt="600" link_id="26" start_time="0">100</demand>
+		<demand commodity_id="1" dt="600" link_id="27" start_time="0">100</demand>
+		<demand commodity_id="1" dt="600" link_id="28" start_time="0">100</demand>
+		<demand commodity_id="1" dt="600" link_id="29" start_time="0">100</demand>
+	</demands>
+	<splits>
+		<split_node commodity_id="1" link_in="22" node_id="0">
+			<split link_out="23">1.0</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="29" node_id="0">
+			<split link_out="23">1.0</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="25" node_id="1">
+			<split link_out="5">1.0</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="26" node_id="1">
+			<split link_out="5">1.0</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="6" node_id="2">
+			<split link_out="30">1.0</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="12" node_id="4">
+			<split link_out="31">1.0</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="0" node_id="5">
+			<split link_out="7">1.0</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="4" node_id="6">
+			<split link_out="17">1.0</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="27" node_id="6">
+			<split link_out="17">1.0</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="2" node_id="7">
+			<split link_out="13">1.0</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="3" node_id="8">
+			<split link_out="2">0.333333333333</split>
+			<split link_out="11">0.333333333333</split>
+			<split link_out="14">0.333333333333</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="10" node_id="8">
+			<split link_out="2">0.333333333333</split>
+			<split link_out="11">0.333333333333</split>
+			<split link_out="14">0.333333333333</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="13" node_id="8">
+			<split link_out="2">0.333333333333</split>
+			<split link_out="11">0.333333333333</split>
+			<split link_out="14">0.333333333333</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="5" node_id="9">
+			<split link_out="1">0.25</split>
+			<split link_out="3">0.25</split>
+			<split link_out="6">0.25</split>
+			<split link_out="25">0.25</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="8" node_id="9">
+			<split link_out="1">0.25</split>
+			<split link_out="3">0.25</split>
+			<split link_out="6">0.25</split>
+			<split link_out="25">0.25</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="14" node_id="9">
+			<split link_out="1">0.25</split>
+			<split link_out="3">0.25</split>
+			<split link_out="6">0.25</split>
+			<split link_out="25">0.25</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="19" node_id="9">
+			<split link_out="1">0.25</split>
+			<split link_out="3">0.25</split>
+			<split link_out="6">0.25</split>
+			<split link_out="25">0.25</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="24" node_id="11">
+			<split link_out="32">1.0</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="9" node_id="13">
+			<split link_out="19">1.0</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="18" node_id="13">
+			<split link_out="19">1.0</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="17" node_id="15">
+			<split link_out="4">0.5</split>
+			<split link_out="20">0.5</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="21" node_id="15">
+			<split link_out="4">0.5</split>
+			<split link_out="20">0.5</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="28" node_id="15">
+			<split link_out="4">0.5</split>
+			<split link_out="20">0.5</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="11" node_id="16">
+			<split link_out="12">0.333333333333</split>
+			<split link_out="16">0.333333333333</split>
+			<split link_out="24">0.333333333333</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="15" node_id="16">
+			<split link_out="12">0.333333333333</split>
+			<split link_out="16">0.333333333333</split>
+			<split link_out="24">0.333333333333</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="23" node_id="16">
+			<split link_out="12">0.333333333333</split>
+			<split link_out="16">0.333333333333</split>
+			<split link_out="24">0.333333333333</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="1" node_id="17">
+			<split link_out="0">0.25</split>
+			<split link_out="8">0.25</split>
+			<split link_out="21">0.25</split>
+			<split link_out="22">0.25</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="7" node_id="17">
+			<split link_out="0">0.25</split>
+			<split link_out="8">0.25</split>
+			<split link_out="21">0.25</split>
+			<split link_out="22">0.25</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="16" node_id="17">
+			<split link_out="0">0.25</split>
+			<split link_out="8">0.25</split>
+			<split link_out="21">0.25</split>
+			<split link_out="22">0.25</split>
+		</split_node>
+		<split_node commodity_id="1" link_in="20" node_id="17">
+			<split link_out="0">0.25</split>
+			<split link_out="8">0.25</split>
+			<split link_out="21">0.25</split>
+			<split link_out="22">0.25</split>
+		</split_node>
+	</splits>
+</scenario>
