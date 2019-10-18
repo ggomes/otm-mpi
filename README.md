@@ -1,28 +1,74 @@
 # otm-mpi
-Open Traffic Models - MPI communication: This a parallized version of the [OTM](https://github.com/ggomes/otm-sim) simulation engine that uses Message Passing Interface (MPI) for multi-core communication on high performance computing (HPC) systems. It can exploit parallel computation and HPC power to significantly speed up large-scale traffic simulations.
+Open Traffic Models - MPI communication: This a parallized version of the [OTM](https://github.com/ggomes/otm-sim) simulation engine that uses [Open MPI](https://www.open-mpi.org/) for multi-core communication on high performance computing systems.
 
-# otm-mpi scaling
-The figure below show the scaling otm-mpi when simulating a synthetic grid network with 62500 nodes, 170000 Links, and 12500 origin-destination pairs. We observed a time reduction from 15,000 sec to 20 sec.
+# Usage
 
-<p align="center">
-<img src="https://github.com/ugirumurera/otm-mpi/blob/master/OTM_Scaling.png" width="50%">
-</p>
+We will assume you have an OTM scenario as an XML file. If you do not, then there are several ways to build one. See [this](XXX). The process has two steps: scenario splitting and MPI runs. Both require [Java 11](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html).
+```
+$ java -version
+java version "11.0.5" 2019-10-15 LTS
+Java(TM) SE Runtime Environment 18.9 (build 11.0.5+10-LTS)
+Java HotSpot(TM) 64-Bit Server VM 18.9 (build 11.0.5+10-LTS, mixed mode)
+```
 
-# Installation
+## Scenario splitting 
 
-## Java 8
+The first step is to split the network into parts for each compute process. This is done with the OTM MPI network splitter, which is contained in the OTM MPI jar file. You can obtain the jar file [here](https://mymavenrepo.com/repo/XtcMAROnIu3PyiMCmbdY/edu/berkeley/ucbtrans/otm-mpi/1.0-SNAPSHOT/) (download the most recent large jar file). Or you can build it from source using [Maven](http://maven.apache.org/). See [this](XXX). To build the jar you will need to install Metis following [these](XXX) steps. 
+
+[This script](XXX) shows how to run the splitter:
 ```
-sudo add-apt-repository ppa:webupd8team/java
-sudo apt update
-sudo apt install oracle-java8-installer
-sudo update-alternatives --config java
-export JAVA_HOME=/usr/lib/jvm/java-8-oracle
-cd ~
+java -jar <OTM MPI jar file> [prefix] [config file] [number of pieces]
+
 ```
-Add Java to your path:
+
++ [prefix]: This is a string that is prepended to all output files. e.g. prefix=`/home/username/otm-mpi-output/myrun' will put all output files into the `/home/username/otm-mpi-output/' folder and prepend them with 'myrun'.
+
++ [config file]: The absolute path and name for the OTM XML file. 
+
++ [number of pieces]: Number of separate scenarios to create, corresponding to the number of MPI processes.
+
+Once this completes, you should see a series of XML files in the output folder, corresponding to each of the sub-scenarios. These should be made available to the machine that will run the MPI processes. 
+
+
+## MPI run : Prerequisites
+
+### Install OpenMPI
 ```
-export PATH=/usr/lib/jvm/java-8-oracle/bin:$PATH
+cd $HOME
+wget https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.0.tar.gz
+tar -xvf openmpi-3.1.0.tar.gz
+rm openmpi-3.1.0.tar.gz
+cd $HOME/openmpi-3.1.0
+./configure --enable-mpi-java --with-jdk-bindir=$JAVA_HOME/bin --with-jdk-headers=$JAVA_HOME/include --prefix=$HOME/openmpi-3.1.0
+make all
+make install
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/openmpi-3.1.0/lib
+export PATH=$HOME/openmpi-3.1.0/bin:$PATH
 ```
+
+### Clone OTM MPI
+```
+export OTMMPIHOME=[otm-mpi root folder]
+cd $OTMMPIHOME/..
+git clone https://github.com/ggomes/otm-mpi.git
+```
+
+### OTM simulator
+Obtain the OTM jar file [here](https://mymavenrepo.com/repo/XtcMAROnIu3PyiMCmbdY/edu/berkeley/ucbtrans/otm-sim/1.0-SNAPSHOT/). Download the latest large jar file. We will use the OTMSIMJAR environment variable to refer to this file. For example,
+```
+export $OTMSIMJAR='/home/username/Downloads/otm-sim-1.0-20190924.222012-1-jar-with-dependencies.jar'
+```
+
+### Build OTM MPI
+Run [build_mpi.sh](XXX)
+
+
+### Run OTM MPI 
+The command for running OTM MPI is provided [here](), and a test is provided [here]()
+
+# Building the scenario splitter from source
+
+To build the OTM MPI jar file from source you will need to install Metis, which in turn requires cmake. Below are instructions for doing this
 
 ## cmake
 ```
@@ -32,65 +78,16 @@ sudo apt update
 sudo apt install cmake
 ```
 
-## environment variables
-```
-export OTMMPIHOME=$HOME/otm-mpi
-export OTMSIMJARNAME=otm-sim-1.0-20190725.163255-36-jar-with-dependencies.jar
-export OTMSIMJAR=$OTMMPIHOME/lib/otm-sim.jar
-```
-
-## OTM
-Download the otm-sim jar file.
-```
-cd ~
-wget https://mymavenrepo.com/repo/XtcMAROnIu3PyiMCmbdY/otm/otm-sim/1.0-SNAPSHOT/$OTMSIMJARNAME
-mv $OTMSIMJARNAME $OTMSIMJAR
-```
-
-## OpenMPI
-```
-cd ~
-wget https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.0.tar.gz
-tar -xvf openmpi-3.1.0.tar.gz
-rm openmpi-3.1.0.tar.gz
-cd ~/openmpi-3.1.0
-./configure --enable-mpi-java --with-jdk-bindir=$JAVA_HOME/bin --with-jdk-headers=$JAVA_HOME/include --prefix=$HOME/openmpi-3.1.0
-make all
-make install
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/openmpi-3.1.0/lib
-export PATH=$HOME/openmpi-3.1.0/bin:$PATH
-```
-
 ## Metis
 Download and install [Metis](http://glaros.dtc.umn.edu/gkhome/metis/metis/download).
 Then add Metis to the PATH:
 ```
 export PATH=/opt/apps/intel18/metis/5.0.2/bin:$PATH
 ```
-Alternatively you may only need to activate the Metis module. 
-```
-module load metis
-```
 
-## clone and build otm-mpi
-```
-cd ~
-git clone https://github.com/ggomes/otm-mpi.git
-cd $OTMMPIHOME/src/main/java
-mpijavac -d $OTMMPIHOME/out_mpijavac -cp $OTMSIMJAR:$OTMMPIHOME/lib/* runner/Timer.java metis/*.java xmlsplitter/*.java metagraph/*.java otm/*.java translator/*.java runner/RunnerMPI.java
-```
+# Scaling results
+The figure below show the scaling otm-mpi when simulating a synthetic grid network with 62500 nodes, 170000 Links, and 12500 origin-destination pairs. We observed a time reduction from 15,000 sec to 20 sec.
 
-## test 
-```
-cd $OTMMPIHOME/src/main/java
-javac -d $OTMMPIHOME/out_javac -cp $OTMSIMJAR:$OTMMPIHOME/lib/* metis/*.java metagraph/*.java translator/*.java xmlsplitter/*.java
-cd $OTMMPIHOME/out_javac
-java -cp $OTMSIMJAR:$OTMMPIHOME/lib/*:. xmlsplitter.XMLSplitter $OTMMPIHOME/test/50 $OTMMPIHOME/config/50_nodes.xml 4
-```
-
-# Scripts
-* ./run_splitter.sh : Test offline scenario splitting with a small network.
-* ./compile_mpi.sh : Compile the program using mpijavac.
-* ./compare_veh.sh : Run small example with 2 processes, and compare result to single-process run. 
-* ./run_mpi.sh : Run small example with 4 processes.
-
+<p align="center">
+<img src="https://github.com/ugirumurera/otm-mpi/blob/master/OTM_Scaling.png" width="50%">
+</p>
