@@ -32,7 +32,7 @@ Once this completes, you should see a series of XML files in the output folder, 
 
 ### Prerequisites
 
-#### Install OpenMPI
+#### Install Open MPI
 ```
 cd $HOME
 wget https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.0.tar.gz
@@ -63,7 +63,7 @@ export OTMSIMJAR=/home/username/Downloads/otm-sim-1.0-20190924.222012-1-jar-with
 Run [build_mpi.sh](https://github.com/ggomes/otm-mpi/blob/master/scripts/build_mpi.sh)
 
 ### Run
-The command for running OTM MPI is provided [here](https://github.com/ggomes/otm-mpi/blob/master/scripts/run_mpi.sh), and a test is provided [here](https://github.com/ggomes/otm-mpi/blob/master/scripts/test_run_mpi.sh)
+The command for running OTM MPI is provided [here](https://github.com/ggomes/otm-mpi/blob/master/scripts/run_mpi.sh), and a test is provided [here](https://github.com/ggomes/otm-mpi/blob/master/scripts/test_run_mpi.sh).
 
 # Building the splitter from source
 
@@ -84,7 +84,7 @@ Then add Metis to the PATH:
 export PATH=/opt/apps/intel18/metis/5.0.2/bin:$PATH
 ```
 
-# Scaling results
+# Sample results
 The figure below show the scaling otm-mpi when simulating a synthetic grid network with 62500 nodes, 170000 Links, and 12500 origin-destination pairs. We observed a time reduction from 15,000 sec to 20 sec.
 
 <p align="center">
