@@ -18,7 +18,8 @@ public class XMLSplitterTest {
         // try to run each one
         for(int i=0;i<num_partitions;i++){
             String cfg_file = String.format("%s_cfg_%d.xml",prefix,i);
-            OTM otm = OTM.load(cfg_file);
+            OTM otm = new OTM();
+            otm.load(cfg_file,true,false);
             System.out.println("Running partioned file " + i);
             otm.run(0f, duration);
         }

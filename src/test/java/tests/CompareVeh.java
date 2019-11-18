@@ -39,7 +39,8 @@ public class CompareVeh {
         String serial_prefix = String.format("%s_serial_%d",prefix_name,repetition);
 
         // run serial
-        OTM otm = OTM.load(config_file);
+        OTM otm = new OTM();
+        otm.load(config_file,true,false);
         otm.output.request_links_veh(serial_prefix,output_folder,null,otm.scenario.get_link_ids(),out_dt);
         otm.run(0f,duration);
 

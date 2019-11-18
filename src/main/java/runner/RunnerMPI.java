@@ -2,7 +2,10 @@ package runner;
 
 import api.OTM;
 import api.OTMdev;
+import error.OTMException;
 import mpi.MPI;
+import mpi.MPIException;
+import org.json.simple.parser.ParseException;
 import otm.OTMRunner;
 import metagraph.MyMetaGraph;
 import translator.Translator;
@@ -35,30 +38,56 @@ public class RunnerMPI {
      * 3 boolean : [writeouput] true->write network state to files
      * 4 float : [out_dt] sim dt in seconds
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
-        prefix = args[0];
-        repetition = Integer.parseInt(args[1]);
-        duration = Float.parseFloat(args[2]);
-        writeoutput = Boolean.valueOf(args[3]);
-        out_dt = Float.parseFloat(args[4]);
+        try {
+            prefix = args[0];
+            repetition = Integer.parseInt(args[1]);
+            duration = Float.parseFloat(args[2]);
+            writeoutput = Boolean.valueOf(args[3]);
+            out_dt = Float.parseFloat(args[4]);
 
-        Timer timer;
+            Timer timer;
 
-        // initialize mpi
-        if(run_mpi)
-            MPI.Init(args);
+            // initialize mpi
+            if(run_mpi)
+                MPI.Init(args);
 
-        int my_rank = run_mpi ? MPI.COMM_WORLD.getRank() : 0;
-        int num_processes = run_mpi ? MPI.COMM_WORLD.getSize() : 1;
+            int my_rank = run_mpi ? MPI.COMM_WORLD.getRank() : 0;
+            int num_processes = run_mpi ? MPI.COMM_WORLD.getSize() : 1;
 
-        File prefix_file = new File(prefix);
-        String output_prefix = String.format("%s_%d_%d",prefix_file.getName(),my_rank,repetition);
-        String output_folder = prefix_file.getParentFile().getAbsolutePath();
+            File prefix_file = new File(prefix);
+            String output_prefix = String.format("%s_%d_%d",prefix_file.getName(),my_rank,repetition);
+            String output_folder = prefix_file.getParentFile().getAbsolutePath();
 
-        // trivial case ...........................
-        if(num_processes==1){
+            // trivial case ...........................
+            if(num_processes==1){
 
+                timer = new Timer(run_mpi);
+                OTMdev otm = new OTMdev(new OTM(String.format("%s_cfg_%d.xml",prefix,my_rank),false,false));
+                otm.otm.initialize(0f);
+                if(writeoutput)
+                    otm.otm.output.request_links_veh(output_prefix,output_folder, null, otm.otm.scenario.get_link_ids(), out_dt);
+                load_subscenario_time = timer.get_total_time();
+
+                timer = new Timer(run_mpi);
+                OTMRunner.run(otm.scenario, 0f,duration);
+                mpi_run_time = timer.get_total_time();
+
+                write_output(output_folder,output_prefix,null);
+
+                if(run_mpi)
+                    MPI.Finalize();
+
+                System.exit(0);
+            }
+
+            // read my metagraph ......................
+            timer = new Timer(run_mpi);
+            MyMetaGraph my_metagraph = new MyMetaGraph(String.format("%s_mg_%d.json",prefix,my_rank));
+            metagraph_load_time = timer.get_total_time();
+
+            // extract the subscenario for this rank
             timer = new Timer(run_mpi);
             OTMdev otm = new OTMdev(new OTM(String.format("%s_cfg_%d.xml",prefix,my_rank),false,false));
             otm.otm.initialize(0f);
@@ -66,52 +95,32 @@ public class RunnerMPI {
                 otm.otm.output.request_links_veh(output_prefix,output_folder, null, otm.otm.scenario.get_link_ids(), out_dt);
             load_subscenario_time = timer.get_total_time();
 
+            // create communicator and translator ...........................
             timer = new Timer(run_mpi);
-            OTMRunner.run(otm.scenario, 0f,duration);
+            int [] neighbors = my_metagraph.get_neighbors();
+            mpi.GraphComm comm = run_mpi ?
+                    MPI.COMM_WORLD.createDistGraphAdjacent(neighbors, neighbors, MPI.INFO_NULL, false) :
+                    null;
+
+            Translator translator = new Translator(my_metagraph,otm.scenario);
+            create_translator_time = timer.get_total_time();
+
+            // run ...................................
+            timer = new Timer(run_mpi);
+            comm_time = OTMRunner.run(otm.scenario, 0f,duration,translator,comm);
             mpi_run_time = timer.get_total_time();
 
-            write_output(output_folder,output_prefix,null);
+            // write timers ...........................
+            write_output(output_folder,output_prefix,translator);
 
+            // finalize mpi
             if(run_mpi)
                 MPI.Finalize();
-
-            System.exit(0);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
         }
-
-        // read my metagraph ......................
-        timer = new Timer(run_mpi);
-        MyMetaGraph my_metagraph = new MyMetaGraph(String.format("%s_mg_%d.json",prefix,my_rank));
-        metagraph_load_time = timer.get_total_time();
-
-        // extract the subscenario for this rank
-        timer = new Timer(run_mpi);
-        OTMdev otm = new OTMdev(new OTM(String.format("%s_cfg_%d.xml",prefix,my_rank),false,false));
-        otm.otm.initialize(0f);
-        if(writeoutput)
-            otm.otm.output.request_links_veh(output_prefix,output_folder, null, otm.otm.scenario.get_link_ids(), out_dt);
-        load_subscenario_time = timer.get_total_time();
-
-        // create communicator and translator ...........................
-        timer = new Timer(run_mpi);
-        int [] neighbors = my_metagraph.get_neighbors();
-        mpi.GraphComm comm = run_mpi ?
-                MPI.COMM_WORLD.createDistGraphAdjacent(neighbors, neighbors, MPI.INFO_NULL, false) :
-                null;
-
-        Translator translator = new Translator(my_metagraph,otm.scenario);
-        create_translator_time = timer.get_total_time();
-
-        // run ...................................
-        timer = new Timer(run_mpi);
-        comm_time = OTMRunner.run(otm.scenario, 0f,duration,translator,comm);
-        mpi_run_time = timer.get_total_time();
-
-        // write timers ...........................
-        write_output(output_folder,output_prefix,translator);
-
-        // finalize mpi
-        if(run_mpi)
-            MPI.Finalize();
     }
 
     private static void write_output(String output_folder,String output_prefix, Translator translator) {

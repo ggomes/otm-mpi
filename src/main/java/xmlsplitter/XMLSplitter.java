@@ -84,40 +84,46 @@ public class XMLSplitter {
         Set<Long> keep_links = new HashSet<>();
         keep_links.addAll(mygraph.links);
 
+        Set vsources = new HashSet<>();
+        Set vsinks = new HashSet();
+
         // additional nodes and links to keep
         for (Neighbor neighbor : my_metagraph.neighbors) {
             for (Long link_id : neighbor.rel_sources) {
-                Link link = base_scenario.get_link_with_id(link_id);
 
                 // start node for rel sources
-                keep_nodes.add(link.getStartNodeId());
+                Long start_node_id = base_scenario.get_link_with_id(link_id).getStartNodeId();
+                vsources.add(start_node_id);
 
                 // For relative sources all previous links, ie links that enter its start node.
                 // This is to ensure that upstream road connections used in the decoder have
-                // an upstream node to map to in Translator.rc2nodemodel.
-                Set<Long> in_links = base_scenario.get_inlink_ids_for_node(link.getStartNodeId());
+                // a node to map to in Translator.rc2nodemodel.
+                Set<Long> in_links = base_scenario.get_inlink_ids_for_node(start_node_id);
                 keep_links.addAll(in_links);
                 keep_nodes.addAll(in_links.stream()
                         .map(linkid->base_scenario.get_start_node_for_link(linkid))
                         .collect(Collectors.toSet()));
-
             }
+
             for (Long link_id : neighbor.rel_sinks) {
-                jaxb.Link link = base_scenario.get_link_with_id(link_id);
 
                 // end node for rel sinks
-                keep_nodes.add(link.getEndNodeId());
+                Long end_node_id = base_scenario.get_link_with_id(link_id).getEndNodeId();
+                vsinks.add(end_node_id);
 
                 // For relative sinks all next links, ie links that leave its end node.
-                // This is to ensure a) that lanegroups in relative sinks are created correcly,
+                // This is to ensure a) that lanegroups in relative sinks are created correctly,
                 // and b) that split ratios on the end node make sense.
-                Set<Long> out_links = base_scenario.get_outlink_ids_for_node(link.getEndNodeId());
+                Set<Long> out_links = base_scenario.get_outlink_ids_for_node(end_node_id);
                 keep_links.addAll(out_links);
                 keep_nodes.addAll(out_links.stream()
                         .map(linkid->base_scenario.get_end_node_for_link(linkid))
                         .collect(Collectors.toSet()));
             }
         }
+
+        keep_nodes.addAll(vsinks);
+        keep_nodes.addAll(vsources);
 
         // scenario ............................................
         jaxb.Scenario subscenario = new jaxb.Scenario();
@@ -135,8 +141,12 @@ public class XMLSplitter {
         // nodes
         jaxb.Nodes nodes = new jaxb.Nodes();
         subnetwork.setNodes(nodes);
-        for (Long node_id : keep_nodes)
-            nodes.getNode().add(base_scenario.get_node_with_id(node_id));
+        for (Long node_id : keep_nodes) {
+            jaxb.Node node = base_scenario.get_node_with_id(node_id);
+            node.setVsource(vsources.contains(node_id) ? true : null);
+            node.setVsink(vsinks.contains(node_id) ? true : null);
+            nodes.getNode().add(node);
+        }
 
         // links
         jaxb.Links links = new jaxb.Links();
