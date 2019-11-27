@@ -1,11 +1,9 @@
 package otm;
 
-import common.Network;
 import dispatch.AbstractEvent;
 import dispatch.Dispatcher;
-import dispatch.EventFluidFluxUpdate;
 import error.OTMException;
-import models.AbstractFluidModel;
+import models.FluidModel;
 import mpi.MPI;
 import runner.Timer;
 import translator.Translator;
@@ -16,7 +14,7 @@ public class EventMacroFlowUpdateMPI extends AbstractEvent {
     private final mpi.GraphComm comm;
     private Timer comm_timer;
 
-    public EventMacroFlowUpdateMPI(Dispatcher dispatcher, float timestamp,AbstractFluidModel model, Translator translator, mpi.GraphComm comm, Timer comm_timer){
+    public EventMacroFlowUpdateMPI(Dispatcher dispatcher, float timestamp,FluidModel model, Translator translator, mpi.GraphComm comm, Timer comm_timer){
         super(dispatcher,1,timestamp,model);
         this.translator = translator;
         this.comm = comm;
@@ -28,7 +26,7 @@ public class EventMacroFlowUpdateMPI extends AbstractEvent {
 
         super.action(verbose);
 
-        AbstractFluidModel model = (AbstractFluidModel)recipient;
+        FluidModel model = (FluidModel)recipient;
 
         try {
             update_fluid_flux(model,timestamp);
@@ -43,14 +41,13 @@ public class EventMacroFlowUpdateMPI extends AbstractEvent {
 
     }
 
-    public void update_fluid_flux(AbstractFluidModel model,float timestamp) throws Exception {
+    public void update_fluid_flux(FluidModel model,float timestamp) throws Exception {
         model.update_fluid_flux_part_I(timestamp);
         mpi_communicate();
         model.update_fluid_flux_part_II(timestamp);
     }
 
     private void mpi_communicate() throws Exception {
-
         comm_timer.start();
 
         double [] rcvBuf = translator.create_rcv_buffer();

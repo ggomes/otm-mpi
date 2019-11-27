@@ -114,7 +114,6 @@ public class CompareVeh {
         return mae;
     }
 
-
     private static List<Long> readLinks(String filename){
         List<Long> link_ids = new ArrayList<>();
         try {

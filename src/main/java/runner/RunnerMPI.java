@@ -2,10 +2,7 @@ package runner;
 
 import api.OTM;
 import api.OTMdev;
-import error.OTMException;
 import mpi.MPI;
-import mpi.MPIException;
-import org.json.simple.parser.ParseException;
 import otm.OTMRunner;
 import metagraph.MyMetaGraph;
 import translator.Translator;
@@ -116,6 +113,7 @@ public class RunnerMPI {
             // finalize mpi
             if(run_mpi)
                 MPI.Finalize();
+
         } catch (Exception e) {
             System.err.println(e.getMessage());
             e.printStackTrace();

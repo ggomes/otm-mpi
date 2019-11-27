@@ -1,10 +1,9 @@
 #!/bin/bash
 
 n=2
-configfile=$OTMMPIHOME/config/four_intersect.xml
-prefix=$OTMMPIHOME/test/4
-duration=1000
-outdt=10
+prefix=$OTMMPIHOME/test/50
+duration=6
 writeoutput=true
+outdt=10
 
 $OTMMPIHOME/scripts/run_mpi.sh $n $prefix 1 $duration $writeoutput $outdt

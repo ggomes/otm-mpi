@@ -9,8 +9,8 @@ import java.util.List;
 
 public class MetaGraphPair {
 
-    Graph glow;
-    Graph ghigh;
+    public Graph glow;
+    public Graph ghigh;
     public long low;
     public long high;
 

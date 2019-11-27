@@ -66,9 +66,9 @@ public class ScenarioWrapper {
     }
 
     public class MyNode {
-        Set<Long> inlinks = new HashSet<>();
-        Set<Long> outlinks = new HashSet<>();
-        jaxb.Node node;
+        public Set<Long> inlinks = new HashSet<>();
+        public Set<Long> outlinks = new HashSet<>();
+        public jaxb.Node node;
         public MyNode(jaxb.Node node){
             this.node = node;
         }
@@ -82,7 +82,7 @@ public class ScenarioWrapper {
 
     public class MyLink {
         Set<jaxb.Roadconnection> incoming_rcs = new HashSet<>();
-        jaxb.Link link;
+        public jaxb.Link link;
         public MyLink(jaxb.Link link){this.link=link;}
         public void add_incoming_rc(jaxb.Roadconnection rc){incoming_rcs.add(rc);}
     }

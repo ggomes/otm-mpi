@@ -42,4 +42,11 @@ public class Cypher {
             neighbor_disp[i+1] = neighbor_disp[i] + neighbor_length[i];
     }
 
+    @Override
+    public String toString() {
+        String str = "";
+        for(AbstractMessageItem item : items)
+            str += String.format("%s\n",item);
+        return str;
+    }
 }
