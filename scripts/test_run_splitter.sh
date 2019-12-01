@@ -1,9 +1,8 @@
 #!/bin/bash
 
 n=2
-configfile=$OTMMPIHOME/config/50_nodes.xml
-#configfile=$OTMMPIHOME/config/scenario_25_nodes.xml
-# configfile=/home/gomes/Desktop/test/small_Miami.xml
-prefix=$OTMMPIHOME/test/50
+configfile=/home/gomes/code/otm/otm-tools/python/berkeley.xml
+prefix=$OTMMPIHOME/test/b
+verbose=true
 
-$OTMMPIHOME/scripts/run_splitter.sh $prefix $configfile $n
+$OTMMPIHOME/scripts/run_splitter.sh $prefix $configfile $n $verbose

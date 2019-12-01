@@ -20,27 +20,29 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 public class XMLSplitter {
 
+
     public static String prefix;
     public static String config_file;
     public static int num_partitions;
+    private static boolean verbose;
 
     /**
      * 0 : String prefix
      * 1 : String config_file
      * 2 : int num_partitions
+     * 3 : boolean verbose
      */
     public static void main(String[] args) throws Exception {
 
         prefix = args[0];
         config_file = args[1];
         num_partitions = Integer.parseInt(args[2]);
+        verbose = args.length<=3 ? false : Boolean.parseBoolean(args[3]);
 
         if(num_partitions==1){
             String config_name = (new File(config_file)).getName().replaceFirst("[.][^.]+$", "");
@@ -51,25 +53,30 @@ public class XMLSplitter {
         }
 
         // read the scenario
+        print("Reading the scenario");
         ScenarioWrapper base_scenario = new ScenarioWrapper(JaxbLoader.load_scenario(config_file, true));
 
         // create Metis manager
         MetisManager metis_manager = new MetisManager(prefix, num_partitions);
 
         // run metis
+        print("Running Metis");
         metis_manager.run(base_scenario);
 
         // read the metagraph
+        print("Creating the metagraph");
         MetaGraph metagraph = new MetaGraph(base_scenario,metis_manager);
 
         // extract per rank
         for(int rank=0;rank<num_partitions;rank++){
 
             // extract and print my_metagraph
+            print("Exporting JSON",rank);
             MyMetaGraph my_metagraph = metagraph.carve_for_rank(rank);
             my_metagraph.write_to_json(String.format("%s_mg_%d.json",prefix,rank));
 
             // extract and print subscenario
+            print("Exporting XML",rank);
             jaxb.Scenario sub_scenario = extract_subnetwork(my_metagraph, base_scenario);
             String out_file_name = String.format("%s_cfg_%d.xml",prefix,rank);
             write_to_xml(sub_scenario,out_file_name);
@@ -200,7 +207,7 @@ public class XMLSplitter {
         jaxb.Roadconnections road_connections = new jaxb.Roadconnections();
         subnetwork.setRoadconnections(road_connections);
         for (jaxb.Roadconnection rc : base_scenario.get_road_connections()) {
-            if (links_all.contains(rc.getInLink()) || links_all.contains(rc.getOutLink())) {
+            if (links_all.contains(rc.getInLink()) && links_all.contains(rc.getOutLink())) {
                 road_connections.getRoadconnection().add(rc);
             }
         }
@@ -303,4 +310,15 @@ public class XMLSplitter {
         }
         return y;
     }
+
+    private static void print(String str){
+        if(verbose)
+            System.out.println("[XML Splitter] " + str);
+    }
+
+    private static void print(String str,int my_rank){
+        if(verbose)
+            System.out.println("[XML Splitter] (Rank " + my_rank + ") " + str);
+    }
+
 }

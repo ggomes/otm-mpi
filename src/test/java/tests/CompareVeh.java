@@ -15,6 +15,7 @@ public class CompareVeh {
     static String config_file;
     static float out_dt;
     static float duration;
+    private static boolean verbose;
 
     static final double threshold = 1e-3;
 
@@ -24,6 +25,7 @@ public class CompareVeh {
      * 2 string : [config_file]
      * 3 float : [out_dt] seconds
      * 4 float : [duration] seconds
+     * 5 boolean : verbose
      */
     public static void main(String[] args) throws Exception {
 
@@ -32,6 +34,7 @@ public class CompareVeh {
         config_file = args[2];
         out_dt = Float.parseFloat(args[3]);
         duration = Float.parseFloat(args[4]);
+        verbose = args.length<=5 ? false : Boolean.parseBoolean(args[5]);
 
         File prefix_file = new File(prefix);
         String prefix_name = prefix_file.getName();
@@ -39,22 +42,26 @@ public class CompareVeh {
         String serial_prefix = String.format("%s_serial_%d",prefix_name,repetition);
 
         // run serial
+        print("Running single process");
         OTM otm = new OTM();
         otm.load(config_file,true,false);
         otm.output.request_links_veh(serial_prefix,output_folder,null,otm.scenario.get_link_ids(),out_dt);
         otm.run(0f,duration);
 
         // load
+        print("Loading single process result");
         VehInfo serial_vehs = readVehicles(prefix+"_serial");
 
         // read mpi
+        print("Loading MPI results");
         Set<VehInfo> mpi_vehs = new HashSet<>();
         for(int i=0;i<num_partitions;i++)
             mpi_vehs.add(readVehicles(String.format("%s_%d",prefix,i)));
         VehInfo mpi = merge(mpi_vehs,serial_vehs);
 
         // compare
-        System.out.println("MAE = " + MAE(mpi,serial_vehs));
+        print("Computing MAE");
+        print("MAE = " + MAE(mpi,serial_vehs));
 
     }
 
@@ -167,6 +174,11 @@ public class CompareVeh {
             for (int j = 0; j < x.veh[i].length; j++)
                 System.out.print(x.veh[i][j] + "\t");
         }
+    }
+
+    private static void print(String str){
+        if(verbose)
+            System.out.println("[Error computation] " + str);
     }
 
     public static class VehInfo{

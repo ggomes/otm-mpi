@@ -4,6 +4,7 @@
 # 3 int : [repetitions]
 # 4 float : [duration] sim duration in seconds
 # 5 boolean : [writeouput] true->write network state to files
-# 6 float : [out_dt] sim dt in seconds
+# 6 float : [out_dt] output dt in seconds
+# 7 boolean : verbose
 cd $OTMMPIHOME/out_mpijavac
-mpirun -np $1 java -cp $OTMSIMJAR:$OTMMPIHOME/lib/*:. runner/RunnerMPI $2 $3 $4 $5 $6
+mpirun -np $1 java -cp $OTMSIMJAR:$OTMMPIHOME/lib/*:. runner/RunnerMPI $2 $3 $4 $5 $6 $7

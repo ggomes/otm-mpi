@@ -20,6 +20,8 @@ public class OTMRunner {
     public static double run(Scenario scenario, float start_time, float duration, Translator translator, mpi.GraphComm comm) throws OTMException, MPIException {
         Timer comm_timer = new Timer(true);
         Dispatcher dispatcher = new Dispatcher(start_time);
+
+
         scenario.initialize(dispatcher);
         run_mpi(scenario,duration,dispatcher,translator,comm,comm_timer);
         scenario.is_initialized = false;
@@ -37,7 +39,6 @@ public class OTMRunner {
 
         if(scenario.network.models.isEmpty())
             throw new OTMException("No models!");
-
 
         Set<BaseModel> fluid_models = scenario.network.models.values().stream()
                 .filter(m->m.getClass().getSuperclass().getSimpleName().equals("FluidModel"))

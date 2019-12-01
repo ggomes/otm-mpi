@@ -21,6 +21,7 @@ public class RunnerMPI {
     public static float duration;
     public static boolean writeoutput;
     public static float out_dt;
+    private static boolean verbose;
 
     public static double metagraph_load_time;
     public static double load_subscenario_time;
@@ -34,6 +35,7 @@ public class RunnerMPI {
      * 2 float : [duration] sim duration in seconds
      * 3 boolean : [writeouput] true->write network state to files
      * 4 float : [out_dt] sim dt in seconds
+     * 5 boolean : verbose
      */
     public static void main(String[] args) {
 
@@ -43,6 +45,7 @@ public class RunnerMPI {
             duration = Float.parseFloat(args[2]);
             writeoutput = Boolean.valueOf(args[3]);
             out_dt = Float.parseFloat(args[4]);
+            verbose = args.length<=5 ? false : Boolean.parseBoolean(args[5]);
 
             Timer timer;
 
@@ -80,11 +83,13 @@ public class RunnerMPI {
             }
 
             // read my metagraph ......................
+            print("Reading metagraph from JSON",my_rank);
             timer = new Timer(run_mpi);
             MyMetaGraph my_metagraph = new MyMetaGraph(String.format("%s_mg_%d.json",prefix,my_rank));
             metagraph_load_time = timer.get_total_time();
 
             // extract the subscenario for this rank
+            print("Extracting subscenario",my_rank);
             timer = new Timer(run_mpi);
             OTMdev otm = new OTMdev(new OTM(String.format("%s_cfg_%d.xml",prefix,my_rank),false,false));
             otm.otm.initialize(0f);
@@ -93,6 +98,7 @@ public class RunnerMPI {
             load_subscenario_time = timer.get_total_time();
 
             // create communicator and translator ...........................
+            print("Creating communicator and translator",my_rank);
             timer = new Timer(run_mpi);
             int [] neighbors = my_metagraph.get_neighbors();
             mpi.GraphComm comm = run_mpi ?
@@ -103,11 +109,13 @@ public class RunnerMPI {
             create_translator_time = timer.get_total_time();
 
             // run ...................................
+            print("Running",my_rank);
             timer = new Timer(run_mpi);
             comm_time = OTMRunner.run(otm.scenario, 0f,duration,translator,comm);
             mpi_run_time = timer.get_total_time();
 
             // write timers ...........................
+            print("Writing output",my_rank);
             write_output(output_folder,output_prefix,translator);
 
             // finalize mpi
@@ -142,6 +150,11 @@ public class RunnerMPI {
                 e.printStackTrace();
             }
         }
+    }
+
+    private static void print(String str,int my_rank){
+        if(verbose)
+            System.out.println("[MPI runner] (Rank " + my_rank + ") " + str);
     }
 
 }
