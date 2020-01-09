@@ -5,8 +5,8 @@ import dispatch.EventFluidFluxUpdate;
 import dispatch.EventFluidStateUpdate;
 import dispatch.EventStopSimulation;
 import error.OTMException;
-import models.FluidModel;
-import models.BaseModel;
+import models.AbstractModel;
+import models.fluid.FluidModel;
 import mpi.MPIException;
 import runner.Scenario;
 import runner.Timer;
@@ -40,7 +40,7 @@ public class OTMRunner {
         if(scenario.network.models.isEmpty())
             throw new OTMException("No models!");
 
-        Set<BaseModel> fluid_models = scenario.network.models.values().stream()
+        Set<AbstractModel> fluid_models = scenario.network.models.values().stream()
                 .filter(m->m.getClass().getSuperclass().getSimpleName().equals("FluidModel"))
                 .collect(Collectors.toSet());
 
@@ -76,7 +76,7 @@ public class OTMRunner {
         if(scenario.network.models.size()!=1)
             throw new OTMException("This currently works only for a single model.");
 
-        BaseModel abs_model = scenario.network.models.values().iterator().next();
+        AbstractModel abs_model = scenario.network.models.values().iterator().next();
 
         if(!(abs_model instanceof FluidModel))
             throw new OTMException("Not a fluid model.");

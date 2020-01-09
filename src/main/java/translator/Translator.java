@@ -5,30 +5,26 @@ import common.RoadConnection;
 import keys.KeyCommPathOrLink;
 import metagraph.MyMetaGraph;
 import metagraph.Neighbor;
-import models.FluidModel;
-import models.BaseLaneGroup;
-import models.ctm.Cell;
-import models.ctm.LaneGroup;
-import models.NodeModel;
+import models.AbstractLaneGroup;
+import models.fluid.Cell;
+import models.fluid.FluidModel;
+import models.fluid.LaneGroup;
+import models.fluid.NodeModel;
 import runner.Scenario;
-import utils.OTMUtils;
-
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toSet;
 
 public class Translator {
 
     public long myRank;
 
     // ... encoder
-    public Map<Long,NodeModel> rc2nodemodel = new HashMap<>();
-    public Map<Long,NodeModel> lg2nodemodel = new HashMap<>();
+    public Map<Long, NodeModel> rc2nodemodel = new HashMap<>();
+    public Map<Long, NodeModel> lg2nodemodel = new HashMap<>();
 
     // ... decoder
     public Map<Long, Link> rc2Link = new HashMap<>();
-    public Map<Long,LaneGroup> lgid2lg = new HashMap<>();
+    public Map<Long, LaneGroup> lgid2lg = new HashMap<>();
 
     public Cypher encoder;
     public Cypher decoder;
@@ -52,8 +48,8 @@ public class Translator {
                     if(start_node_model!=null)
                         rc2nodemodel.put(rc.getId(), start_node_model);
                 }
-                for(BaseLaneGroup lg : rel_source.lanegroups_flwdn.values()) {
-                    lgid2lg.put(lg.id,(models.ctm.LaneGroup) lg);
+                for(AbstractLaneGroup lg : rel_source.lanegroups_flwdn.values()) {
+                    lgid2lg.put(lg.id,(models.fluid.LaneGroup) lg);
                     if(end_node_model!=null)
                         lg2nodemodel.put(lg.id, end_node_model);
                 }
@@ -71,8 +67,8 @@ public class Translator {
                     if(start_node_model!=null)
                         rc2nodemodel.put(rc.getId(), start_node_model);
                 }
-                for(BaseLaneGroup lg : rel_sink.lanegroups_flwdn.values()) {
-                    lgid2lg.put(lg.id,(models.ctm.LaneGroup) lg);
+                for(AbstractLaneGroup lg : rel_sink.lanegroups_flwdn.values()) {
+                    lgid2lg.put(lg.id,(models.fluid.LaneGroup) lg);
                     if(end_node_model!=null)
                         lg2nodemodel.put(lg.id, end_node_model);
                 }
@@ -103,7 +99,7 @@ public class Translator {
                         decoder.add_item(neighbor.rank, new MessageItemRC(rc.getId(), key));
 
             for(Link link : rel_sinks)
-                for (BaseLaneGroup lg : get_ordered_lanegroups_for_link(link))
+                for (AbstractLaneGroup lg : get_ordered_lanegroups_for_link(link))
                     for (KeyCommPathOrLink key : get_ordered_states_for_lanegroup(lg))
                         decoder.add_item(neighbor.rank, new MessageItemLG(lg, key));
 
@@ -116,7 +112,7 @@ public class Translator {
                         encoder.add_item(neighbor.rank, new MessageItemRC(rc.getId(), key));
 
             for(Link link : rel_sources)
-                for (BaseLaneGroup lg : get_ordered_lanegroups_for_link(link))
+                for (AbstractLaneGroup lg : get_ordered_lanegroups_for_link(link))
                     for (KeyCommPathOrLink key : get_ordered_states_for_lanegroup(lg))
                         encoder.add_item(neighbor.rank, new MessageItemLG(lg, key));
 
@@ -147,7 +143,7 @@ public class Translator {
                 MessageItemRC xitem = (MessageItemRC) item;
                 Long rc_id = xitem.rc_id;
                 NodeModel node_model = rc2nodemodel.get(rc_id);
-                models.ctm.RoadConnection rc = node_model.rcs.get(rc_id);
+                models.fluid.RoadConnection rc = node_model.rcs.get(rc_id);
                 value = rc.f_rs.get(xitem.key);
             }
 
@@ -159,7 +155,7 @@ public class Translator {
                 } else {
                     Long lg_id = xitem.lg.id;
                     NodeModel node_model = lg2nodemodel.get(lg_id);
-                    models.ctm.UpLaneGroup ulg = node_model.ulgs.get(lg_id);
+                    models.fluid.UpLaneGroup ulg = node_model.ulgs.get(lg_id);
                     value = ulg.f_gs.get(xitem.key);
                 }
             }
@@ -184,7 +180,7 @@ public class Translator {
                 MessageItemRC xitem = (MessageItemRC) item;
                 Long rc_id = xitem.rc_id;
                 NodeModel node_model = rc2nodemodel.get(rc_id);
-                models.ctm.RoadConnection rc = node_model.rcs.get(rc_id);
+                models.fluid.RoadConnection rc = node_model.rcs.get(rc_id);
                 rc.f_rs.put(xitem.key,value);
             }
 
@@ -197,7 +193,7 @@ public class Translator {
                 } else {
                     Long lg_id = xitem.lg.id;
                     NodeModel node_model = lg2nodemodel.get(lg_id);
-                    models.ctm.UpLaneGroup ulg = node_model.ulgs.get(lg_id);
+                    models.fluid.UpLaneGroup ulg = node_model.ulgs.get(lg_id);
                     ulg.f_gs.put(xitem.key,value);
                 }
             }
@@ -221,14 +217,14 @@ public class Translator {
         return x;
     }
 
-    private List<BaseLaneGroup> get_ordered_lanegroups_for_link(Link link){
-        List<BaseLaneGroup> x = new ArrayList<>(link.lanegroups_flwdn.values());
+    private List<AbstractLaneGroup> get_ordered_lanegroups_for_link(Link link){
+        List<AbstractLaneGroup> x = new ArrayList<>(link.lanegroups_flwdn.values());
         Collections.sort(x);
         return x;
     }
 
-    private List<KeyCommPathOrLink> get_ordered_states_for_lanegroup(BaseLaneGroup lg){
-        List<KeyCommPathOrLink> x = new ArrayList<>(((models.ctm.LaneGroup) lg).states);
+    private List<KeyCommPathOrLink> get_ordered_states_for_lanegroup(AbstractLaneGroup lg){
+        List<KeyCommPathOrLink> x = new ArrayList<>(((models.fluid.LaneGroup) lg).states);
         Collections.sort(x);
         return x;
     }

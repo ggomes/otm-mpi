@@ -1,15 +1,15 @@
 package translator;
 
 import keys.KeyCommPathOrLink;
-import models.BaseLaneGroup;
+import models.AbstractLaneGroup;
 
 public class MessageItemLG extends AbstractMessageItem {
 
-    public models.ctm.LaneGroup lg;
+    public models.fluid.LaneGroup lg;
 
-    public MessageItemLG(BaseLaneGroup lg, KeyCommPathOrLink key) {
+    public MessageItemLG(AbstractLaneGroup lg, KeyCommPathOrLink key) {
         super(key);
-        this.lg = (models.ctm.LaneGroup ) lg;
+        this.lg = (models.fluid.LaneGroup ) lg;
     }
 
     @Override

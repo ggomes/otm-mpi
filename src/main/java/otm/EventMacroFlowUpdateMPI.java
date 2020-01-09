@@ -3,7 +3,7 @@ package otm;
 import dispatch.AbstractEvent;
 import dispatch.Dispatcher;
 import error.OTMException;
-import models.FluidModel;
+import models.fluid.FluidModel;
 import mpi.MPI;
 import runner.Timer;
 import translator.Translator;
@@ -14,7 +14,7 @@ public class EventMacroFlowUpdateMPI extends AbstractEvent {
     private final mpi.GraphComm comm;
     private Timer comm_timer;
 
-    public EventMacroFlowUpdateMPI(Dispatcher dispatcher, float timestamp,FluidModel model, Translator translator, mpi.GraphComm comm, Timer comm_timer){
+    public EventMacroFlowUpdateMPI(Dispatcher dispatcher, float timestamp, FluidModel model, Translator translator, mpi.GraphComm comm, Timer comm_timer){
         super(dispatcher,1,timestamp,model);
         this.translator = translator;
         this.comm = comm;
