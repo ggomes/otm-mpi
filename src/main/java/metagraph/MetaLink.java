@@ -1,36 +1,29 @@
 package metagraph;
 
-import metagraph.Graph;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MetaGraphPair {
+public class MetaLink {
 
-    public Graph glow;
-    public Graph ghigh;
-    public long low;
-    public long high;
+    public Integer low;
+    public Integer high;
 
     // common links between the two subnetworks
     public List<Long> low_to_high = new ArrayList<>();
     public List<Long> high_to_low = new ArrayList<>();
 
-    public MetaGraphPair(Graph glow, Graph ghigh, jaxb.Link first_link) throws Exception {
-        this.glow = glow;
-        this.ghigh = ghigh;
+    public MetaLink(Graph glow, Graph ghigh, jaxb.Link first_link) throws Exception {
         this.low = glow.index;
         this.high = ghigh.index;
         add_link(glow,ghigh,first_link);
     }
 
-    public MetaGraphPair(JSONObject jobj){
-        glow = new Graph((JSONObject) jobj.get("glow"));
-        ghigh = new Graph((JSONObject) jobj.get("ghigh"));
-        low = Long.parseLong((String)jobj.get("low"));
-        high = Long.parseLong((String)jobj.get("high"));
+    public MetaLink(JSONObject jobj){
+        low = Integer.parseInt((String)jobj.get("low"));
+        high = Integer.parseInt((String)jobj.get("high"));
         for(Object obj : (JSONArray) jobj.get("low_to_high"))
             low_to_high.add((long) obj);
         for(Object obj : (JSONArray) jobj.get("high_to_low"))
@@ -69,12 +62,13 @@ public class MetaGraphPair {
 
     }
 
-    public JSONObject toJson(){
+    public JSONObject toJson(List<Graph> graphs){
         JSONObject obj = new JSONObject();
-        obj.put("glow",glow.toJson());
-        obj.put("ghigh",ghigh.toJson());
-        obj.put("low",String.format("%d",low));
-        obj.put("high",String.format("%d",high));
+
+        obj.put("glow",graphs.get(low).toJson());
+        obj.put("ghigh",graphs.get(high).toJson());
+        obj.put("low",String.format("%d", low));
+        obj.put("high",String.format("%d", high));
 
         JSONArray lh = new JSONArray();
         obj.put("low_to_high",lh);

@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 
 public class MetaGraph {
 
-    public long num_graphs;                      // number of nodes in the metagraph
-    public Map<PairKey, MetaGraphPair> pairs;    // metagraph as a list of metagraph pairs
+    public List<Graph> meta_nodes;
+    public Map<PairKey, MetaLink> meta_links;
 
     public MetaGraph(ScenarioWrapper scenario, MetisManager metis) throws Exception {
-        num_graphs = metis.num_partitions;
-        pairs = build_pairs(scenario,metis);
+        meta_nodes = extract_graphs(scenario,metis);
+        meta_links = build_pairs(scenario,metis);
     }
 
     public MetaGraph(String jsonfile) throws Exception {
@@ -26,15 +26,15 @@ public class MetaGraph {
 
         JSONObject json = (JSONObject) parser.parse(new FileReader(jsonfile));
 
-        this.num_graphs = (long) json.get("num_graphs");
+//        this.num = (long) json.get("num_graphs");
 
-        pairs = new HashMap<>();
+        meta_links = new HashMap<>();
         for(Object obj : (JSONArray) json.get("pairs")){
             JSONObject jobj = (JSONObject) obj;
             JSONArray jpairkey = (JSONArray) jobj.get("pairkey");
             JSONObject jmetagraphpair = (JSONObject) jobj.get("metagraphpair");
-            pairs.put(  new PairKey(jpairkey) ,
-                        new MetaGraphPair(jmetagraphpair) );
+            meta_links.put(  new PairKey(jpairkey) ,
+                        new MetaLink(jmetagraphpair) );
         }
     }
 
@@ -43,12 +43,12 @@ public class MetaGraph {
     ////////////////////////////////////////
 
     public MyMetaGraph carve_for_rank(int myrank) {
-        MyMetaGraph my_metagraph = new MyMetaGraph(myrank);
-        for(MetaGraphPair pair : pairs.values()){
+        Graph mygraph = meta_nodes.get(myrank);
+        MyMetaGraph my_metagraph = new MyMetaGraph(myrank,mygraph);
+        for(MetaLink pair : meta_links.values()){
             if(myrank==pair.low || myrank==pair.high)
                 my_metagraph.add_neighbor(pair);
         }
-
         return my_metagraph;
     }
 
@@ -81,21 +81,17 @@ public class MetaGraph {
     // private helpers
     ////////////////////////////////////////
 
-    private Map<PairKey, MetaGraphPair> build_pairs(ScenarioWrapper scenario, MetisManager metis) throws Exception {
+    private Map<PairKey, MetaLink> build_pairs(ScenarioWrapper scenario, MetisManager metis) throws Exception {
 
-        Map<PairKey, MetaGraphPair> pairs = new HashMap<>();
-
-        // extract all graphs
-        List<Graph> graphs = extract_graphs(scenario,metis);
-
-        if( graphs.stream().anyMatch(x->x.isempty()))
+        Map<PairKey, MetaLink> pairs = new HashMap<>();
+        if( meta_nodes.stream().anyMatch(x->x.isempty()))
             throw new Exception("Metis produced empty subgraphs.");
 
         // assign (boundary) links to graphs
         for(jaxb.Link link : scenario.get_links()){
 
             // the graphs that this link belongs to
-            Set<Graph> mygraphs = graphs.stream()
+            Set<Graph> mygraphs = meta_nodes.stream()
                     .filter(graph->graph.links.contains(link.getId()))
                     .collect(Collectors.toSet());
 
@@ -128,7 +124,7 @@ public class MetaGraph {
             if(pairs.containsKey(key))
                 pairs.get(key).add_link(glow,ghigh,link);
             else
-                pairs.put(key,new MetaGraphPair(glow,ghigh,link));
+                pairs.put(key,new MetaLink(glow,ghigh,link));
 
         }
         return pairs;
@@ -143,7 +139,7 @@ public class MetaGraph {
         List<Graph> graphs = new ArrayList<>();
         Long max_node_id = base_scenario.get_nodes().stream().mapToLong(node->node.getId()).max().getAsLong();
 
-        for(long graph_index=0;graph_index<num_graphs;graph_index++){
+        for(int graph_index = 0; graph_index< metis.num_partitions; graph_index++){
 
             Graph graph = new Graph(graph_index);
             graphs.add(graph);

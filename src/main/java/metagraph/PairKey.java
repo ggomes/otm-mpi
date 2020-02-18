@@ -1,6 +1,5 @@
 package metagraph;
 
-//import com.google.gson.JsonArray;
 import org.json.simple.JSONArray;
 
 import java.util.Objects;
@@ -8,25 +7,18 @@ import java.util.Objects;
 public class PairKey {
 
     // subscenario index = rank index = metagraph low or high
-    public final long low;   // the lower of the two ranks (subscenarios) in the pair
-    public final long high;  // the higher of the two ranks (subscenarios) in the pair
+    public final int low;   // the lower of the two ranks (subscenarios) in the pair
+    public final int high;  // the higher of the two ranks (subscenarios) in the pair
 
-    public PairKey(long low, long high) {
+    public PairKey(int low, int high) {
         this.low = low;
         this.high = high;
     }
 
     public PairKey(JSONArray jarr) {
-        this.low = (long) jarr.get(0);
-        this.high = (long) jarr.get(1);
+        this.low = (int) jarr.get(0);
+        this.high = (int) jarr.get(1);
     }
-
-//    public JsonArray toJson(){
-//        JsonArray arr = new JsonArray();
-//        arr.add(low);
-//        arr.add(high);
-//        return arr;
-//    }
 
     @Override
     public boolean equals(Object o) {

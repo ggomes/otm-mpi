@@ -19,8 +19,9 @@ public class MyMetaGraph {
     public Graph mygraph;
     public List<Neighbor> neighbors;
 
-    public MyMetaGraph(int myrank){
+    public MyMetaGraph(int myrank, Graph mygraph){
         this.myrank = myrank;
+        this.mygraph = mygraph;
         neighbors = new ArrayList<>();
     }
 
@@ -34,11 +35,9 @@ public class MyMetaGraph {
             neighbors.add(new Neighbor((JSONObject) obj));
     }
 
-    public void add_neighbor(MetaGraphPair pair){
+    public void add_neighbor(MetaLink pair){
 
         boolean i_am_low = myrank==pair.low;
-
-        mygraph = i_am_low ? pair.glow : pair.ghigh;
         long neighbor_rank = i_am_low ? pair.high : pair.low;
         List<Long> rel_sources = i_am_low ? pair.high_to_low : pair.low_to_high;
         List<Long> rel_sinks   = i_am_low ? pair.low_to_high : pair.high_to_low;

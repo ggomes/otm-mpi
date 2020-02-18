@@ -8,16 +8,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Graph {
-    public Long index;
+    public Integer index;
     public Set<Long> nodes = new HashSet<>();
     public Set<Long> links = new HashSet<>();
 
-    public Graph(Long index) {
+    public Graph(Integer index) {
         this.index = index;
     }
 
     public Graph(JSONObject obj){
-        this.index = (Long) obj.get("index");
+        this.index = (Integer) obj.get("index");
         for(Object o : (JSONArray) obj.get("nodes"))
             nodes.add((Long) o);
         for(Object o : (JSONArray) obj.get("links"))
