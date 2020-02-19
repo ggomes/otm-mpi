@@ -32,6 +32,14 @@ Once this completes, you should see a series of XML files in the output folder, 
 
 ### Prerequisites
 
+## cmake
+```
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:george-edison55/cmake-3.x
+sudo apt update
+sudo apt install cmake
+```
+
 #### Install Open MPI
 ```
 cd $HOME
@@ -66,16 +74,6 @@ Run [build_mpi.sh](https://github.com/ggomes/otm-mpi/blob/master/scripts/build_m
 The command for running OTM MPI is provided [here](https://github.com/ggomes/otm-mpi/blob/master/scripts/run_mpi.sh), and a test is provided [here](https://github.com/ggomes/otm-mpi/blob/master/scripts/test_run_mpi.sh).
 
 # Building the splitter from source
-
-To build the OTM MPI jar file from source you will need to install Metis, which in turn requires cmake. Below are instructions for doing this.
-
-## cmake
-```
-sudo apt install software-properties-common
-sudo add-apt-repository ppa:george-edison55/cmake-3.x
-sudo apt update
-sudo apt install cmake
-```
 
 ## Metis
 Download and install [Metis](http://glaros.dtc.umn.edu/gkhome/metis/metis/download).
