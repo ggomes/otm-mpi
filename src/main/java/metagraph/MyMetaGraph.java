@@ -46,7 +46,8 @@ public class MyMetaGraph {
     }
 
     public int [] get_neighbors(){
-        return neighbors.stream().map(n->n.rank)
+        return neighbors.isEmpty() ? new int[0] :
+                neighbors.stream().map(n->n.rank)
                 .mapToInt(x->toIntExact(x))
                 .toArray();
     }

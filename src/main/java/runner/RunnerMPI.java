@@ -101,7 +101,7 @@ public class RunnerMPI {
             print("Creating communicator and translator",my_rank);
             timer = new Timer(run_mpi);
             int [] neighbors = my_metagraph.get_neighbors();
-            mpi.GraphComm comm = run_mpi ?
+            mpi.GraphComm comm = run_mpi && neighbors.length>0 ?
                     MPI.COMM_WORLD.createDistGraphAdjacent(neighbors, neighbors, MPI.INFO_NULL, false) :
                     null;
 
