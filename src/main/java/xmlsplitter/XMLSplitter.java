@@ -73,6 +73,9 @@ public class XMLSplitter {
             // extract and print my_metagraph
             print("Exporting JSON",rank);
             MyMetaGraph my_metagraph = metagraph.carve_for_rank(rank);
+
+            if(my_metagraph.neighbors.isEmpty())
+                print("Rank " + rank + " is disconnected.");
             my_metagraph.write_to_json(String.format("%s_mg_%d.json",prefix,rank));
 
             // extract and print subscenario

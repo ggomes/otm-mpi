@@ -17,7 +17,7 @@ public class Graph {
     }
 
     public Graph(JSONObject obj){
-        this.index = (Integer) obj.get("index");
+        this.index = Math.toIntExact( (Long) obj.get("index") );
         for(Object o : (JSONArray) obj.get("nodes"))
             nodes.add((Long) o);
         for(Object o : (JSONArray) obj.get("links"))
