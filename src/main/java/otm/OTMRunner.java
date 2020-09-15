@@ -19,8 +19,6 @@ public class OTMRunner {
     public static double run(Scenario scenario, float start_time, float duration, Translator translator, mpi.GraphComm comm) throws OTMException, MPIException {
         Timer comm_timer = new Timer(true);
         Dispatcher dispatcher = new Dispatcher(start_time);
-
-
         scenario.initialize(dispatcher);
         run_mpi(scenario,duration,dispatcher,translator,comm,comm_timer);
         scenario.is_initialized = false;

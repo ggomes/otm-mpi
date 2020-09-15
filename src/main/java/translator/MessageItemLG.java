@@ -1,14 +1,14 @@
 package translator;
 
 import common.AbstractLaneGroup;
-import keys.KeyCommPathOrLink;
+import keys.State;
 import models.fluid.FluidLaneGroup;
 
 public class MessageItemLG extends AbstractMessageItem {
 
     public FluidLaneGroup lg;
 
-    public MessageItemLG(AbstractLaneGroup lg, KeyCommPathOrLink key) {
+    public MessageItemLG(AbstractLaneGroup lg, State key) {
         super(key);
         this.lg = (FluidLaneGroup) lg;
     }

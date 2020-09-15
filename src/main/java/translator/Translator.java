@@ -4,7 +4,7 @@ import common.AbstractLaneGroup;
 import common.Link;
 import common.RoadConnection;
 import common.Scenario;
-import keys.KeyCommPathOrLink;
+import keys.State;
 import metagraph.MyMetaGraph;
 import metagraph.Neighbor;
 import models.fluid.AbstractFluidModel;
@@ -96,12 +96,12 @@ public class Translator {
             // + for all relative sinks l, all lanegroups in l (lg), and all states that use lg.
             for(Link link : rel_sources)
                 for (RoadConnection rc : get_ordered_road_connections_entering(link))
-                    for (KeyCommPathOrLink key : get_ordered_states_for_road_connection(rc))
+                    for (State key : get_ordered_states_for_road_connection(rc))
                         decoder.add_item(neighbor.rank, new MessageItemRC(rc.getId(), key));
 
             for(Link link : rel_sinks)
                 for (AbstractLaneGroup lg : get_ordered_lanegroups_for_link(link))
-                    for (KeyCommPathOrLink key : get_ordered_states_for_lanegroup(lg))
+                    for (State key : get_ordered_states_for_lanegroup(lg))
                         decoder.add_item(neighbor.rank, new MessageItemLG(lg, key));
 
             // send message (encoder) .............................................................
@@ -109,12 +109,12 @@ public class Translator {
             // + for all relative sources l, all lanegroups in l (lg), and all states that use lg.
             for(Link link : rel_sinks)
                 for (RoadConnection rc : get_ordered_road_connections_entering(link))
-                    for (KeyCommPathOrLink key : get_ordered_states_for_road_connection(rc))
+                    for (State key : get_ordered_states_for_road_connection(rc))
                         encoder.add_item(neighbor.rank, new MessageItemRC(rc.getId(), key));
 
             for(Link link : rel_sources)
                 for (AbstractLaneGroup lg : get_ordered_lanegroups_for_link(link))
-                    for (KeyCommPathOrLink key : get_ordered_states_for_lanegroup(lg))
+                    for (State key : get_ordered_states_for_lanegroup(lg))
                         encoder.add_item(neighbor.rank, new MessageItemLG(lg, key));
 
         }
@@ -212,8 +212,8 @@ public class Translator {
         return x;
     }
 
-    private List<KeyCommPathOrLink> get_ordered_states_for_road_connection(RoadConnection rc){
-        List<KeyCommPathOrLink> x = new ArrayList<>(rc.get_states());
+    private List<State> get_ordered_states_for_road_connection(RoadConnection rc){
+        List<State> x = new ArrayList<State>(rc.get_states());
         Collections.sort(x);
         return x;
     }
@@ -224,8 +224,8 @@ public class Translator {
         return x;
     }
 
-    private List<KeyCommPathOrLink> get_ordered_states_for_lanegroup(AbstractLaneGroup lg){
-        List<KeyCommPathOrLink> x = new ArrayList<>(((FluidLaneGroup) lg).states);
+    private List<State> get_ordered_states_for_lanegroup(AbstractLaneGroup lg){
+        List<State> x = new ArrayList<>(((FluidLaneGroup) lg).states);
         Collections.sort(x);
         return x;
     }
