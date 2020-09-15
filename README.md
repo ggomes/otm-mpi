@@ -41,15 +41,13 @@ export OTMSIMJAR=$HOME/Downloads/otm-sim-1.0-20190924.222012-1-jar-with-dependen
 
 # Usage
 
-We will assume you have an OTM scenario as an XML file. If you do not, then there are several ways to build one. See [this](https://github.com/ggomes/otm-tools). The process has two steps: scenario splitting and MPI runs. 
+## 1. Create a scenario configuration file.
+ [this](https://github.com/ggomes/otm-tools). 
 
-## 1. Scenario splitting 
+## 2. [Split the network](https://github.com/ggomes/otm-mpi/blob/master/scripts/test_run_splitter.sh). This script generates a series of XML files corresponding to each of the subnetworks. These should be made available to the machines that will run the MPI processes. 
 
-+ [Sample script](https://github.com/ggomes/otm-mpi/blob/master/scripts/test_run_splitter.sh)
+## 3. [Run](https://github.com/ggomes/otm-mpi/blob/master/scripts/test_run_mpi.sh).
 
-This generates a series of XML files corresponding to each of the subnetworks. These should be made available to the machines that will run the MPI processes. 
-
-## 2. MPI run
-
-+ [Sample script](https://github.com/ggomes/otm-mpi/blob/master/scripts/test_run_mpi.sh).
+## 4. Retrieve the results. 
+(Under development)
 
