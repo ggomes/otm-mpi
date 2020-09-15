@@ -3,7 +3,7 @@ Provides MPI communication capabilities for [OTM](https://github.com/ggomes/otm-
 # Installation
 
 
-## [Java]
+## Java
 ```
 $ java -version
 java version "11.0.5" 2019-10-15 LTS
@@ -25,10 +25,10 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/openmpi-4.0.5/lib
 export PATH=$HOME/openmpi-4.0.5/bin:$PATH
 ```
 
-## [Metis](http://glaros.dtc.umn.edu/gkhome/metis/metis/download).
-+ Download, install, and add to PATH:
+## [Metis](http://glaros.dtc.umn.edu/gkhome/views/metis)
 ```
-export PATH=/opt/apps/intel18/metis/5.0.2/bin:$PATH
+sudo apt update
+sudo apt install metis
 ```
 
 ## Build OTM-MPI
