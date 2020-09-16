@@ -38,13 +38,12 @@ sudo apt install metis
 export OTMSIMJAR=$HOME/Downloads/otm-sim-1.0-20190924.222012-1-jar-with-dependencies.jar
 ```
 + [Download the source code.](https://github.com/ggomes/otm-mpi) 
-+ Build the network splitter with `scripts/build_splitter.sh`.
-+ Build the runner with `scripts/build_mpi.sh`.
++ Build the network splitter with `scripts/build_splitter.sh`. (Uses [Maven](https://maven.apache.org/))
++ Build the runner with `scripts/build_mpi.sh`. (Uses OpenMPI's mpijavac)
 
 # Usage
 
 1. Create a scenario configuration file, for example from OSM using [otm-tools](https://github.com/ggomes/otm-tools). 
 2. Split the network ([script](https://github.com/ggomes/otm-mpi/blob/master/scripts/test_run_splitter.sh)). This script generates a series of XML files corresponding to each of the subnetworks. These should be made available to the machines that will run the MPI processes. 
 3. Run ([script](https://github.com/ggomes/otm-mpi/blob/master/scripts/test_run_mpi.sh)).
-4. Retrieve the results.  (Under development)
-
+4. Load the results into Python using [otm-tools](https://github.com/ggomes/otm-tools). 
