@@ -38,11 +38,11 @@ public class OTMRunner {
             throw new OTMException("No models!");
 
         Set<AbstractModel> fluid_models = scenario.network.models.values().stream()
-                .filter(m->m.getClass().getSuperclass().getSimpleName().equals("FluidModel"))
+                .filter(m->m instanceof AbstractFluidModel)
                 .collect(Collectors.toSet());
 
         if(fluid_models.size()!=1)
-            throw new OTMException("This currently works only for a single fluid model.");
+            throw new OTMException("This currently works only for a single fluid model. This one has " + fluid_models.size());
 
         AbstractFluidModel model = (AbstractFluidModel) fluid_models.iterator().next();
 
