@@ -1,4 +1,4 @@
-Provides MPI communication capabilities for [OTM](https://github.com/ggomes/otm-sim).
+Distributed simulation of traffic networks with [OTM](https://github.com/ggomes/otm-sim).
 
 # Installation
 
