@@ -121,26 +121,26 @@
                 </executions>
             </plugin>
 
-            <!-- MAVEN BUILD HELPER (Add Open MPI) -->
+            <!-- MAVEN BUILD HELPER (Add Open MPI)
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
+                        <id>add-source</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>add-source</goal>
                         </goals>
                         <configuration>
                             <sources>
-                                <!--suppress UnresolvedMavenProperty -->
                                 <source>${env.OPENMPIJAVA}</source>
                             </sources>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-
+            </plugin> -->
         </plugins>
     </build>
 
@@ -165,13 +165,6 @@
             <artifactId>jakarta.activation</artifactId>
             <version>1.2.1</version>
             <scope>runtime</scope>
-        </dependency>
-
-        <!-- OTM BASE -->
-        <dependency>
-            <groupId>edu.berkeley.ucbtrans</groupId>
-            <artifactId>otm-base</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <!-- OTM SIMULATOR -->

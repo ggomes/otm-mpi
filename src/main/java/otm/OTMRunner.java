@@ -1,14 +1,14 @@
 package otm;
 
+import common.Scenario;
 import dispatch.Dispatcher;
-import dispatch.EventFluidFluxUpdate;
-import dispatch.EventFluidStateUpdate;
 import dispatch.EventStopSimulation;
 import error.OTMException;
 import models.AbstractModel;
-import models.fluid.FluidModel;
+import models.fluid.AbstractFluidModel;
+import models.fluid.EventFluidModelUpdate;
+import models.fluid.EventFluidStateUpdate;
 import mpi.MPIException;
-import runner.Scenario;
 import runner.Timer;
 import translator.Translator;
 
@@ -47,7 +47,7 @@ public class OTMRunner {
         if(fluid_models.size()!=1)
             throw new OTMException("This currently works only for a single fluid model.");
 
-        FluidModel model = (FluidModel) fluid_models.iterator().next();
+        AbstractFluidModel model = (AbstractFluidModel) fluid_models.iterator().next();
 
         dispatcher.set_continue_simulation(true);
 
@@ -78,13 +78,13 @@ public class OTMRunner {
 
         AbstractModel abs_model = scenario.network.models.values().iterator().next();
 
-        if(!(abs_model instanceof FluidModel))
+        if(!(abs_model instanceof AbstractFluidModel))
             throw new OTMException("Not a fluid model.");
 
         dispatcher.set_continue_simulation(true);
 
         float now = dispatcher.current_time;
-        FluidModel model = (FluidModel) abs_model;
+        AbstractFluidModel model = (AbstractFluidModel) abs_model;
 
         // register stop the simulation
         dispatcher.set_stop_time(now+duration);
@@ -92,7 +92,7 @@ public class OTMRunner {
 
         // register first models.ctm clock tick
         if(!scenario.network.models.isEmpty()) {
-            dispatcher.register_event(new EventFluidFluxUpdate(dispatcher, now + model.dt, model));
+            dispatcher.register_event(new EventFluidModelUpdate(dispatcher, now + model.dt, model));
             dispatcher.register_event(new EventFluidStateUpdate(dispatcher, now + model.dt, model));
         }
 

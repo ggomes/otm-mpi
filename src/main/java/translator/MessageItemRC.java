@@ -1,12 +1,12 @@
 package translator;
 
-import keys.KeyCommPathOrLink;
+import keys.State;
 
 public class MessageItemRC extends AbstractMessageItem {
 
     public Long rc_id;
 
-    public MessageItemRC(Long rc_id,KeyCommPathOrLink key) {
+    public MessageItemRC(Long rc_id, State key) {
         super(key);
         this.rc_id = rc_id;
     }
