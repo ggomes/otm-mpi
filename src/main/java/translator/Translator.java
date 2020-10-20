@@ -2,12 +2,14 @@ package translator;
 
 import common.AbstractLaneGroup;
 import common.Link;
+import common.RoadConnection;
 import common.Scenario;
 import keys.State;
 import metagraph.MyMetaGraph;
 import metagraph.Neighbor;
 import models.fluid.AbstractFluidModel;
 import models.fluid.FluidLaneGroup;
+import models.fluid.ctm.CTMCell;
 import models.fluid.nodemodel.NodeModel;
 
 import java.util.*;
@@ -149,7 +151,7 @@ public class Translator {
             if(item instanceof MessageItemLG){
                 MessageItemLG xitem = (MessageItemLG) item;
                 if(xitem.lg.link.is_sink){
-                    Cell lastCell = xitem.lg.cells.get(xitem.lg.cells.size()-1);
+                    CTMCell lastCell = (CTMCell) xitem.lg.cells.get(xitem.lg.cells.size()-1);
                     value = lastCell.demand_dwn.get(item.key);
                 } else {
                     Long lg_id = xitem.lg.id;
@@ -186,7 +188,7 @@ public class Translator {
             if(item instanceof MessageItemLG){
                 MessageItemLG xitem = (MessageItemLG) item;
                 if(xitem.lg.link.is_sink){
-                    models.fluid.ctm.CTMCell lastCell = xitem.lg.cells.get(xitem.lg.cells.size()-1);
+                    CTMCell lastCell = (CTMCell) xitem.lg.cells.get(xitem.lg.cells.size()-1);
                     value = lastCell.demand_dwn.get(item.key);
                     lastCell.demand_dwn.put(item.key,value);
                 } else {
@@ -210,8 +212,8 @@ public class Translator {
         return x;
     }
 
-    private List<State> get_ordered_states_for_road_connection(models.fluid.nodemodel.RoadConnection rc){
-        List<State> x = new ArrayList<>(rc.get_states());
+    private List<State> get_ordered_states_for_road_connection(RoadConnection rc){
+        List<State> x = new ArrayList<State>(rc.get_states());
         Collections.sort(x);
         return x;
     }

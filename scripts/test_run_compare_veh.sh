@@ -1,9 +1,9 @@
 #!/bin/bash
 
 n=2
-configfile=/home/gomes/code/otm/otm-tools/python/berkeley.xml
-prefix=$OTMMPIHOME/test/b
-duration=99
+configfile=$OTMMPIHOME/config/50_nodes.xml
+prefix=$OTMMPIHOME/test/n2
+duration=3600
 outdt=10
 verbose=true
 

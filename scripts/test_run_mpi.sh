@@ -1,8 +1,8 @@
 #!/bin/bash
 
 n=2
-prefix=$OTMMPIHOME/test/b
-duration=6
+prefix=$OTMMPIHOME/test/n2
+duration=3600
 writeoutput=true
 outdt=10
 verbose=true

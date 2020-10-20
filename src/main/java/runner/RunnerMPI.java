@@ -6,6 +6,7 @@ import mpi.MPI;
 import otm.OTMRunner;
 import metagraph.MyMetaGraph;
 import translator.Translator;
+import utils.OTMUtils;
 
 import java.io.File;
 import java.io.FileWriter;
