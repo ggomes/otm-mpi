@@ -32,14 +32,14 @@ sudo apt install metis
 
 ## Build OTM-MPI
 
-+ [Download the latest OTM jar file](https://mymavenrepo.com/repo/XtcMAROnIu3PyiMCmbdY/edu/berkeley/ucbtrans/otm-sim/1.0-SNAPSHOT/). This is the large jar file with the most recent date. 
-+ Assign the location of the jar file to environment variable OTMSIMJAR. For example,
++ [Download the latest OTM jar file](https://mymavenrepo.com/repo/XtcMAROnIu3PyiMCmbdY/edu/berkeley/ucbtrans/otm-sim/1.0-SNAPSHOT/). This is the most recent file of the form `otm-sim-1.0-YYYYMMDD.HHMMSS-N-jar-with-dependencies.jar`. 
++ Assign the location of the jar file to environment variable `OTMSIMJAR`. For example,
 ```
 export OTMSIMJAR=$HOME/Downloads/otm-sim-1.0-20190924.222012-1-jar-with-dependencies.jar
 ```
-+ [Download the source code.](https://github.com/ggomes/otm-mpi) 
-+ Build the network splitter with `scripts/build_splitter.sh`. (Uses [Maven](https://maven.apache.org/))
-+ Build the runner with `scripts/build_mpi.sh`. (Uses OpenMPI's mpijavac)
++ Download the [source code](https://github.com/ggomes/otm-mpi).
++ Build the network splitter with [`scripts/build_splitter.sh`](https://github.com/ggomes/otm-mpi/blob/master/scripts/build_splitter.sh). (Uses [Maven](https://maven.apache.org/))
++ Build the runner with [`scripts/build_mpi.sh`](https://github.com/ggomes/otm-mpi/blob/master/scripts/build_mpi.sh). (Uses OpenMPI's `mpijavac` command)
 
 # Usage
 
