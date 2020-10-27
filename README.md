@@ -22,6 +22,7 @@ cd openmpi-4.0.5
 make all install
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/openmpi-4.0.5/lib
 export PATH=$HOME/openmpi-4.0.5/bin:$PATH
+export OPENMPIJAVA=$HOME/openmpi-4.0.5/ompi/mpi/java
 ```
 
 ## [Metis](http://glaros.dtc.umn.edu/gkhome/views/metis)
