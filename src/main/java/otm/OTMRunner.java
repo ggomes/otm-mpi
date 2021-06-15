@@ -1,12 +1,9 @@
 package otm;
 
-import common.Scenario;
+import core.*;
 import dispatch.Dispatcher;
 import dispatch.EventStopSimulation;
 import error.OTMException;
-import models.AbstractModel;
-import models.fluid.AbstractFluidModel;
-import models.fluid.EventFluidStateUpdate;
 import mpi.MPIException;
 import runner.Timer;
 import translator.Translator;
@@ -16,28 +13,26 @@ import java.util.stream.Collectors;
 
 public class OTMRunner {
 
-    public static double run(Scenario scenario, float start_time, float duration, Translator translator, mpi.GraphComm comm) throws OTMException, MPIException {
+    public static double run(OTM otm, float duration, Translator translator, mpi.GraphComm comm) throws OTMException, MPIException {
         Timer comm_timer = new Timer(true);
-        Dispatcher dispatcher = new Dispatcher(start_time);
-        scenario.initialize(dispatcher);
-        run_mpi(scenario,duration,dispatcher,translator,comm,comm_timer);
-        scenario.is_initialized = false;
+        otm.initialize(0f);
+        Dispatcher dispatcher = otm.scenario.dispatcher;
+        run_mpi(otm.scenario,duration,dispatcher,translator,comm,comm_timer);
         return comm_timer.get_total_time();
     }
 
-    public static void run(Scenario scenario, float start_time, float duration) throws OTMException {
-        Dispatcher dispatcher = new Dispatcher(start_time);
-        scenario.initialize(dispatcher);
-        run_non_mpi(scenario,duration,dispatcher);
-        scenario.is_initialized = false;
+    public static void run(OTM otm, float duration) throws OTMException {
+        otm.initialize(0f);
+        Dispatcher dispatcher = otm.scenario.dispatcher;
+        run_non_mpi(otm.scenario,duration,dispatcher);
     }
 
     private static void run_mpi(Scenario scenario, float duration, Dispatcher dispatcher, Translator translator, mpi.GraphComm comm, Timer comm_timer) throws OTMException {
 
-        if(scenario.network.models.isEmpty())
+        if(scenario.models.isEmpty())
             throw new OTMException("No models!");
 
-        Set<AbstractModel> fluid_models = scenario.network.models.values().stream()
+        Set<AbstractModel> fluid_models = scenario.models.values().stream()
                 .filter(m->m instanceof AbstractFluidModel)
                 .collect(Collectors.toSet());
 
@@ -55,7 +50,7 @@ public class OTMRunner {
         dispatcher.register_event(new EventStopSimulation(scenario,dispatcher,now+duration));
 
         // register first models.ctm clock tick
-        if(!scenario.network.models.isEmpty()) {
+        if(!scenario.models.isEmpty()) {
             dispatcher.register_event(new EventMacroFlowUpdateMPI(dispatcher,now + model.dt_sec,model,translator,comm,comm_timer));
             dispatcher.register_event(new EventFluidStateUpdate(dispatcher, now + model.dt_sec, model));
         }
@@ -67,13 +62,13 @@ public class OTMRunner {
 
     private static void run_non_mpi(Scenario scenario, float duration, Dispatcher dispatcher) throws OTMException {
 
-        if(scenario.network.models.isEmpty())
+        if(scenario.models.isEmpty())
             throw new OTMException("No models!");
 
-        if(scenario.network.models.size()!=1)
+        if(scenario.models.size()!=1)
             throw new OTMException("This currently works only for a single model.");
 
-        AbstractModel abs_model = scenario.network.models.values().iterator().next();
+        AbstractModel abs_model = scenario.models.values().iterator().next();
 
         if(!(abs_model instanceof AbstractFluidModel))
             throw new OTMException("Not a fluid model.");
@@ -88,7 +83,7 @@ public class OTMRunner {
         dispatcher.register_event(new EventStopSimulation(scenario,dispatcher,now+duration));
 
         // register first models.ctm clock tick
-        if(!scenario.network.models.isEmpty()) {
+        if(!scenario.models.isEmpty()) {
             dispatcher.register_event(new EventMacroFlowUpdateMPI(dispatcher, now + model.dt_sec, model,null,null,null));
             dispatcher.register_event(new EventFluidStateUpdate(dispatcher, now + model.dt_sec, model));
         }

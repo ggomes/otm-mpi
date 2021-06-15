@@ -1,13 +1,8 @@
 package translator;
 
-import common.AbstractLaneGroup;
-import common.Link;
-import common.RoadConnection;
-import common.Scenario;
-import keys.State;
+import core.*;
 import metagraph.MyMetaGraph;
 import metagraph.Neighbor;
-import models.fluid.AbstractFluidModel;
 import models.fluid.FluidLaneGroup;
 import models.fluid.ctm.CTMCell;
 import models.fluid.nodemodel.NodeModel;
@@ -41,18 +36,18 @@ public class Translator {
             // 1) RELATIVE SOURCES
             for(Long link_id : neighbor.rel_sources) {
                 Link rel_source = scenario.network.links.get(link_id);
-                start_node_model = ((AbstractFluidModel)rel_source.model).get_node_model_for_node(rel_source.start_node.getId());
-                end_node_model   = ((AbstractFluidModel)rel_source.model).get_node_model_for_node(rel_source.end_node.getId());
+                start_node_model = ((AbstractFluidModel)rel_source.get_model()).get_node_model_for_node(rel_source.get_start_node().getId());
+                end_node_model   = ((AbstractFluidModel)rel_source.get_model()).get_node_model_for_node(rel_source.get_end_node().getId());
 
                 for (RoadConnection rc : get_ordered_road_connections_entering(rel_source)) {
                     rc2Link.put(rc.getId(),rel_source);
                     if(start_node_model!=null)
                         rc2nodemodel.put(rc.getId(), start_node_model);
                 }
-                for(AbstractLaneGroup lg : rel_source.lanegroups_flwdn.values()) {
-                    lgid2lg.put(lg.id,(FluidLaneGroup) lg);
+                for(AbstractLaneGroup lg : rel_source.get_lgs()) {
+                    lgid2lg.put(lg.getId(),(FluidLaneGroup) lg);
                     if(end_node_model!=null)
-                        lg2nodemodel.put(lg.id, end_node_model);
+                        lg2nodemodel.put(lg.getId(), end_node_model);
                 }
             }
 
@@ -60,18 +55,18 @@ public class Translator {
             // 2) RELATIVE SINKS
             for(Long link_id : neighbor.rel_sinks) {
                 Link rel_sink = scenario.network.links.get(link_id);
-                start_node_model = ((AbstractFluidModel)rel_sink.model).get_node_model_for_node(rel_sink.start_node.getId());
-                end_node_model   = ((AbstractFluidModel)rel_sink.model).get_node_model_for_node(rel_sink.end_node.getId());
+                start_node_model = ((AbstractFluidModel)rel_sink.get_model()).get_node_model_for_node(rel_sink.get_start_node().getId());
+                end_node_model   = ((AbstractFluidModel)rel_sink.get_model()).get_node_model_for_node(rel_sink.get_end_node().getId());
 
                 for (RoadConnection rc : get_ordered_road_connections_entering(rel_sink)) {
                     rc2Link.put(rc.getId(),rel_sink);
                     if(start_node_model!=null)
                         rc2nodemodel.put(rc.getId(), start_node_model);
                 }
-                for(AbstractLaneGroup lg : rel_sink.lanegroups_flwdn.values()) {
-                    lgid2lg.put(lg.id,(FluidLaneGroup) lg);
+                for(AbstractLaneGroup lg : rel_sink.get_lgs()) {
+                    lgid2lg.put(lg.getId(),(FluidLaneGroup) lg);
                     if(end_node_model!=null)
-                        lg2nodemodel.put(lg.id, end_node_model);
+                        lg2nodemodel.put(lg.getId(), end_node_model);
                 }
             }
         }
@@ -150,11 +145,11 @@ public class Translator {
 
             if(item instanceof MessageItemLG){
                 MessageItemLG xitem = (MessageItemLG) item;
-                if(xitem.lg.link.is_sink){
+                if(xitem.lg.get_link().is_sink()){
                     CTMCell lastCell = (CTMCell) xitem.lg.cells.get(xitem.lg.cells.size()-1);
-                    value = lastCell.demand_dwn.get(item.key);
+                    value = lastCell.get_demand().get(item.key);
                 } else {
-                    Long lg_id = xitem.lg.id;
+                    Long lg_id = xitem.lg.getId();
                     NodeModel node_model = lg2nodemodel.get(lg_id);
                     models.fluid.nodemodel.UpLaneGroup ulg = node_model.ulgs.get(lg_id);
                     value = ulg.f_gs.get(xitem.key);
@@ -187,12 +182,12 @@ public class Translator {
 
             if(item instanceof MessageItemLG){
                 MessageItemLG xitem = (MessageItemLG) item;
-                if(xitem.lg.link.is_sink){
+                if(xitem.lg.get_link().is_sink()){
                     CTMCell lastCell = (CTMCell) xitem.lg.cells.get(xitem.lg.cells.size()-1);
-                    value = lastCell.demand_dwn.get(item.key);
-                    lastCell.demand_dwn.put(item.key,value);
+                    value = lastCell.get_demand().get(item.key);
+                    lastCell.get_demand().put(item.key,value);
                 } else {
-                    Long lg_id = xitem.lg.id;
+                    Long lg_id = xitem.lg.getId();
                     NodeModel node_model = lg2nodemodel.get(lg_id);
                     models.fluid.nodemodel.UpLaneGroup ulg = node_model.ulgs.get(lg_id);
                     ulg.f_gs.put(xitem.key,value);
@@ -213,19 +208,19 @@ public class Translator {
     }
 
     private List<State> get_ordered_states_for_road_connection(RoadConnection rc){
-        List<State> x = new ArrayList<State>(rc.get_states());
+        List<State> x = new ArrayList<State>(rc.get_start_link().states);
         Collections.sort(x);
         return x;
     }
 
     private List<AbstractLaneGroup> get_ordered_lanegroups_for_link(Link link){
-        List<AbstractLaneGroup> x = new ArrayList<>(link.lanegroups_flwdn.values());
+        List<AbstractLaneGroup> x = new ArrayList<>(link.get_lgs());
         Collections.sort(x);
         return x;
     }
 
     private List<State> get_ordered_states_for_lanegroup(AbstractLaneGroup lg){
-        List<State> x = new ArrayList<>(((FluidLaneGroup) lg).states);
+        List<State> x = new ArrayList<>(lg.get_link().states);
         Collections.sort(x);
         return x;
     }

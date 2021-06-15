@@ -1,6 +1,6 @@
 package translator;
 
-import keys.State;
+import core.State;
 
 public abstract class AbstractMessageItem {
     public final State key;

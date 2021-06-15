@@ -54,7 +54,7 @@ public class XMLSplitter {
 
         // read the scenario
         print("Reading the scenario");
-        ScenarioWrapper base_scenario = new ScenarioWrapper(JaxbLoader.load_scenario(config_file, true));
+        ScenarioWrapper base_scenario = new ScenarioWrapper(JaxbLoader.load_scenario(config_file));
 
         // create Metis manager
         MetisManager metis_manager = new MetisManager(prefix, num_partitions);

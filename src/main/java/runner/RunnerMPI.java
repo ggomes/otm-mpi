@@ -1,12 +1,10 @@
 package runner;
 
-import api.OTM;
-import api.OTMdev;
+import core.OTM;
 import mpi.MPI;
 import otm.OTMRunner;
 import metagraph.MyMetaGraph;
 import translator.Translator;
-import utils.OTMUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -65,14 +63,14 @@ public class RunnerMPI {
             if(num_processes==1){
 
                 timer = new Timer(run_mpi);
-                OTMdev otm = new OTMdev(new OTM(String.format("%s_cfg_%d.xml",prefix,my_rank),false,false));
-                otm.otm.initialize(0f);
+                OTM otm = new OTM(String.format("%s_cfg_%d.xml",prefix,my_rank),false);
+                otm.initialize(0f);
                 if(writeoutput)
-                    otm.otm.output.request_links_veh(output_prefix,output_folder, null, otm.otm.scenario.get_link_ids(), out_dt);
+                    otm.output.request_links_veh(output_prefix,output_folder, null, otm.scenario.network.links.keySet(), out_dt);
                 load_subscenario_time = timer.get_total_time();
 
                 timer = new Timer(run_mpi);
-                OTMRunner.run(otm.scenario, 0f,duration);
+                OTMRunner.run(otm, duration);
                 mpi_run_time = timer.get_total_time();
 
                 write_output(output_folder,output_prefix,null);
@@ -92,10 +90,10 @@ public class RunnerMPI {
             // extract the subscenario for this rank
             print("Extracting subscenario",my_rank);
             timer = new Timer(run_mpi);
-            OTMdev otm = new OTMdev(new OTM(String.format("%s_cfg_%d.xml",prefix,my_rank),false,false));
-            otm.otm.initialize(0f);
+            OTM otm = new OTM(String.format("%s_cfg_%d.xml",prefix,my_rank),false);
+            otm.initialize(0f);
             if(writeoutput)
-                otm.otm.output.request_links_veh(output_prefix,output_folder, null, otm.otm.scenario.get_link_ids(), out_dt);
+                otm.output.request_links_veh(output_prefix,output_folder, null, otm.scenario.network.links.keySet(), out_dt);
             load_subscenario_time = timer.get_total_time();
 
             // create communicator and translator ...........................
@@ -112,7 +110,7 @@ public class RunnerMPI {
             // run ...................................
             print("Running",my_rank);
             timer = new Timer(run_mpi);
-            comm_time = OTMRunner.run(otm.scenario, 0f,duration,translator,comm);
+            comm_time = OTMRunner.run(otm, duration,translator,comm);
             mpi_run_time = timer.get_total_time();
 
             // write timers ...........................

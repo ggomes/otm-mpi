@@ -1,6 +1,6 @@
 package translator;
 
-import keys.State;
+import core.State;
 
 public class MessageItemRC extends AbstractMessageItem {
 

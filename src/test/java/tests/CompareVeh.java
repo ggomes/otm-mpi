@@ -1,7 +1,5 @@
 package tests;
 
-import api.OTM;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -43,9 +41,8 @@ public class CompareVeh {
 
         // run serial
         print("Running single process");
-        OTM otm = new OTM();
-        otm.load(config_file,true,false);
-        otm.output.request_links_veh(serial_prefix,output_folder,null,otm.scenario.get_link_ids(),out_dt);
+        core.OTM otm = new core.OTM(config_file,false);
+        otm.output.request_links_veh(serial_prefix,output_folder,null,otm.scenario.network.link_ids(),out_dt);
         otm.run(0f,duration);
 
         // load
